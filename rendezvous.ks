@@ -4,8 +4,8 @@
 // Maneuver close to another vessel orbiting the same body.
 /////////////////////////////////////////////////////////////////////////////
 
-run once "lib/lib_ui".
-run once "lib/lib_util".
+runoncepath("lib/lib_ui").
+runoncepath("lib/lib_util").
 
 ON AG10 reboot.
 

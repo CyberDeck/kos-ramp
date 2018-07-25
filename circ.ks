@@ -6,8 +6,8 @@
 
 ON AG10 REBOOT.
 
-run once "lib/lib_ui".
-run once "lib/lib_util".
+runoncepath("lib/lib_ui").
+runoncepath("lib/lib_util").
 
 if Career():canMakeNodes and periapsis > max(body:atm:height,1000)
 {
@@ -19,8 +19,8 @@ if Career():canMakeNodes and periapsis > max(body:atm:height,1000)
 }
 else if apoapsis > 0 and eta:apoapsis < eta:periapsis
 {
-	run once "lib/lib_staging".
-	run once "lib/lib_warp".
+	runoncepath("lib/lib_staging").
+	runoncepath("lib/lib_warp").
 
 	local sstate is sas.
 	sas off.

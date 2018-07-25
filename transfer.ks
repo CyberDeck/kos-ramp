@@ -6,7 +6,7 @@
 
 ON AG10 reboot.
 
-run once "lib/lib_ui".
+runoncepath("lib/lib_ui").
 
 if ship:body <> target:body {
   uiError("Transfer", "Target outside of SoI").

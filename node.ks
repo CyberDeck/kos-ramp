@@ -17,10 +17,10 @@ parameter burnTime is 0. // estimated burn time, lib_staging:burnTimeForDt used 
 
 ON AG10 reboot.
 
-run once "lib/lib_ui".
-run once "lib/lib_util".
-run once "lib/lib_warp".
-run once "lib/lib_staging".
+runoncepath("lib/lib_ui").
+runoncepath("lib/lib_util").
+runoncepath("lib/lib_warp").
+runoncepath("lib/lib_staging").
 
 stagingPrepare().
 

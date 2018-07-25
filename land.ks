@@ -6,7 +6,7 @@
 
 ON AG10 reboot.
 
-run once "lib/lib_ui".
+runoncepath("lib/lib_ui").
 
 global land_slip    is 0.05. // transverse speed @ touchdown (m/s)
 global land_warp    is 3.    // warp factor during descent

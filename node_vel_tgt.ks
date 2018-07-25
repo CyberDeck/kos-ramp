@@ -7,8 +7,8 @@
 // rendezvous.
 /////////////////////////////////////////////////////////////////////////////
 
-run once "lib/lib_ui".
-run once "lib/lib_util".
+runoncepath("lib/lib_ui").
+runoncepath("lib/lib_util").
 
 ON AG10 reboot.
 
