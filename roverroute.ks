@@ -3,7 +3,7 @@
 Parameter MaxSpeed is 28.
 Parameter WaypointTolerance is 5.
 
-runoncepath("lib_ui").
+runoncepath("lib/lib_ui").
 
 local AllFiles is list().
 local Routes is list().

@@ -4,9 +4,9 @@
 // Kills transverse velocity w/r/t target and establishes forward velocity.
 /////////////////////////////////////////////////////////////////////////////
 
-runoncepath("lib_util").
-runoncepath("lib_dock").
-runoncepath("lib_ui").
+runoncepath("lib/lib_util").
+runoncepath("lib/lib_dock").
+runoncepath("lib/lib_ui").
 
 //Those functions are for use by this program ONLY!
 function CancelVelT {

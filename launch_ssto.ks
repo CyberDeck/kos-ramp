@@ -4,8 +4,8 @@ Parameter TGTApoapsis is 150000.
 Parameter TGTHeading is 90.
 
 //Libraries
-runoncepath("lib_ui").
-runoncepath("lib_parts").
+runoncepath("lib/lib_ui").
+runoncepath("lib/lib_parts").
 
 // Global Variables.
 global LaunchSPV0 is ship:AIRSPEED.

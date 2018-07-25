@@ -12,9 +12,9 @@
 /////////////////////////////////////////////////////////////////////////////
 
 
-runoncepath("lib_ui").
-runoncepath("lib_dock").
-runoncepath("lib_parts").
+runoncepath("lib/lib_ui").
+runoncepath("lib/lib_dock").
+runoncepath("lib/lib_parts").
 
 local DockingDone is False.
 local MaxDistanceToApproach is 5000.

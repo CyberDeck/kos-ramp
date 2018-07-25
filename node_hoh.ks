@@ -4,8 +4,8 @@
 parameter MaxOrbitsToTransfer is 5.
 parameter MinLeadTime is 30.
 
-runoncepath("lib_ui").
-runoncepath("lib_util").
+runoncepath("lib/lib_ui").
+runoncepath("lib/lib_util").
 
 // Compute prograde delta-vee required to achieve Hohmann transfer; < 0 means
 // retrograde burn.

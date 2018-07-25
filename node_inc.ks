@@ -5,7 +5,7 @@
 // default is zero or match target if selected
 parameter incl is "".
 
-runOncePath("lib_util").
+runOncePath("lib/lib_util").
 utilRemoveNodes().
 
 local di is 0. // inclination difference (target-current)

@@ -6,8 +6,8 @@
 PARAMETER KindOfCraft IS "Plane". // KindOfCraft valid values are "Plane" and "Shuttle". This changes the way the craft lands.
 PARAMETER LandingGear IS "Tricycle". // LandingGear valid values are "Tricycle" or "Taildragger". This changes how to handle the plane after touchdown. 
 
-runoncepath("lib_ui").
-runoncepath("lib_parts").
+runoncepath("lib/lib_ui").
+runoncepath("lib/lib_parts").
 
 CLEARVECDRAWS().
 CLEARGUIS().

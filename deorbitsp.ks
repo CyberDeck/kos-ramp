@@ -1,8 +1,8 @@
 PARAMETER DeorbitLongOffset IS 0. // Diference from the default deorbit longitude.
 
-runoncepath("lib_ui").
-runoncepath("lib_parts").
-runoncepath("lib_util").
+runoncepath("lib/lib_ui").
+runoncepath("lib/lib_parts").
+runoncepath("lib/lib_util").
 SAS OFF.
 
 FUNCTION LngToDegrees { 

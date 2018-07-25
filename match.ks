@@ -5,8 +5,8 @@
 // small (typically < 1 m/s) and pointed directly at the target.
 /////////////////////////////////////////////////////////////////////////////
 
-run once lib_ui.
-run once lib_util.
-run once lib_dock.
+run once "lib/lib_ui".
+run once "lib/lib_util".
+run once "lib/lib_dock".
 
 dockMatchVelocity(0).

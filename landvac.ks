@@ -29,9 +29,9 @@ PARAMETER LandMode is "TARG".
 PARAMETER LandLat is ship:geoposition:lat.  
 PARAMETER LandLng is ship:geoposition:lng.
 
-runoncepath("lib_ui").
-runoncepath("lib_util").
-runoncepath("lib_land").
+runoncepath("lib/lib_ui").
+runoncepath("lib/lib_util").
+runoncepath("lib/lib_land").
 
 SAS OFF.
 BAYS OFF.

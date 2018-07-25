@@ -4,7 +4,7 @@
 // Make groundfall
 /////////////////////////////////////////////////////////////////////////////
 
-run once lib_ui.
+run once "lib/lib_ui".
 
 global land_slip    is 0.05. // transverse speed @ touchdown (m/s)
 global land_warp    is 3.    // warp factor during descent
@@ -15,7 +15,7 @@ sas off.
 until status <> "ORBITING" {
   lock steering to lookdirup(retrograde:vector, ship:facing:upvector).
   until status <> "ORBITING" {
-    uiBanner("Landing", "Deorbit burn").
+    uiBanner("Landing", "Please do a deorbit burn").
   }
 }
 

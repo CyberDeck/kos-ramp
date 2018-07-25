@@ -13,11 +13,11 @@ parameter speedlimit is 39. // Speedlimit. Default is 39 m/s, almost 88mph ;)
 parameter turnfactor is 5. // Factor to reduce steering with speed..
 
 
-runoncepath("lib_ui").
-runoncepath("lib_util").
-runoncepath("lib_parts").
-runoncepath("lib_terrain").
-runoncepath("lib_rover").
+runoncepath("lib/lib_ui").
+runoncepath("lib/lib_util").
+runoncepath("lib/lib_parts").
+runoncepath("lib/lib_terrain").
+runoncepath("lib/lib_rover").
 
 local wtVAL is 0. //Wheel Throttle Value
 local kTurn is 0. //Wheel turn value.

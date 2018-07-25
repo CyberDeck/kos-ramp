@@ -6,10 +6,10 @@ parameter speedlimit is 28. // Speed limit. Default 28m/s ~ 100km/h
 parameter turnfactor is 5. // Turnfactor
 parameter BreakTime is 3. // Time the craft need to stop with brakes.
 
-runoncepath("lib_ui").
-runoncepath("lib_parts").
-runoncepath("lib_terrain").
-runoncepath("lib_rover").
+runoncepath("lib/lib_ui").
+runoncepath("lib/lib_parts").
+runoncepath("lib/lib_terrain").
+runoncepath("lib/lib_rover").
 
 
 local wtVAL is 0. //Wheel Throttle Value

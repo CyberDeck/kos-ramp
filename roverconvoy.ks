@@ -1,6 +1,6 @@
 @lazyglobal off.
 
-runoncepath("lib_ui").
+runoncepath("lib/lib_ui").
 
 local AllTargets is List().
 local ValidTargets is List().

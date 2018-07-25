@@ -18,11 +18,11 @@ local function defaultRotation {
 }
 parameter launchRoll is defaultRotation().
 
-runoncepath("lib_parts").
-runoncepath("lib_ui").
-runoncepath("lib_util").
-runoncepath("lib_warp").
-runoncepath("lib_staging").
+runoncepath("lib/lib_parts").
+runoncepath("lib/lib_ui").
+runoncepath("lib/lib_util").
+runoncepath("lib/lib_warp").
+runoncepath("lib/lib_staging").
 
 uiBanner("ascend","Ascend to " + round(apo/1000) + "km; heading " + hdglaunch + "º").
 

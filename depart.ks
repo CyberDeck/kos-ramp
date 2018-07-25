@@ -10,9 +10,9 @@
 
 Parameter DockPort is 0. 
 
-runoncepath("lib_dock").
-runoncepath("lib_util").
-runoncepath("lib_ui").
+runoncepath("lib/lib_dock").
+runoncepath("lib/lib_util").
+runoncepath("lib/lib_ui").
 
 local DepartDistance is 90.
 local DepartSpeed is 3.
