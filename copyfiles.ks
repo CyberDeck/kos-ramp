@@ -12,20 +12,32 @@ includeList:add("lib_ui").
 includeList:add("lib_parts").
 includeList:add("lib_util").
 
-IF ship:STATUS = "PRELAUNCH" {
-  includeList:add("launch.ks").
-
-  IF(KUniverse:ORIGINEDITOR = "SPH" OR Ship:Name:TOUPPER:Contains("SSTO")) {
-    includeList:add("launch_ssto").
-  } ELSE {
-    includeList:add("launch_asc").
-    includeList:add("lib_staging").
-    includeList:add("lib_warp").
-    includeList:add("circ.ks").
-    includeList:add("node.ks").
+IF ship:STATUS = "PRELAUNCH" OR ship:STATUS = "LANDED" {
+  IF ship:maxthrust > 0 {
+    includeList:add("launch.ks").
+    IF(KUniverse:ORIGINEDITOR = "SPH" OR Ship:Name:TOUPPER:Contains("SSTO")) {
+      includeList:add("launch_ssto").
+      includeList:add("fly").
+    } ELSE {
+      includeList:add("launch_asc").
+      includeList:add("lib_staging").
+      includeList:add("lib_warp").
+      includeList:add("circ.ks").
+      includeList:add("node.ks").
+    }
   }
+  IF Ship:Name:TOUPPER:Contains("ROVER") {
+    includeList:add("rover").
+    includeList:add("lib_terrain").
+  }
+} ELSE IF ship:STATUS = "SUB_ORBITAL" OR ship:STATUS = "ORBITING" OR ship:STATUS = "ESCAPING" {
+  includeList:add("node").
+  includeList:add("warp").
+  includeList:add("lib_staging").
+  includeList:add("transfer").
+  includeList:add("land").
+  includeList:add("circ").
 }
-
 
 DECLARE FUNCTION includeFile {
   PARAMETER fileName.
