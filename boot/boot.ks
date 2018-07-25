@@ -80,31 +80,9 @@ IF HOMECONNECTION:ISCONNECTED {
     CD ("kos-ramp").
   }
 
-  LOCAL copyok is TRUE.
-  LIST FILES IN fls.
-  LOCAL fSize is 0.
-  FOR f IN fls {
-    IF f:NAME:ENDSWITH(".ks") {
-      SET fSize to fSize + f:SIZE.
-    }
-  }
-  IF core:volume:freespace > fSize {
-    FOR f IN fls {
-      IF f:NAME:ENDSWITH(".ks") {
-        IF NOT COPYPATH(f,HD) { COPYOK OFF. }.
-      }
-    }
-    IF copyok {
-      bootConsole("RAMP initialized.").
-    }
-    ELSE {
-      bootWarning("File copy failed.").
-      failsafe on.
-    }
-  } ELSE {
-    bootWarning("Core volume too small.").
-    failsafe on.
-  }
+  SET copyFilesOk TO False.
+  RUN copyfiles.
+  IF NOT copyFilesOK SET Failsafe TO True.
 } ELSE {
   bootConsole("No connection to KSC detected.").
   IF EXISTS(StartupLocalFile) {
