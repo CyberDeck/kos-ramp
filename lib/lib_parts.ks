@@ -117,6 +117,15 @@ function partsDeployFairings {
 	return partsDoEvent("ModuleProceduralFairing", "deploy").
 }
 
+function partsHasReactionWheels {
+	FOR part in SHIP:PARTS {
+		FOR module in part:MODULES() {
+			IF module = "ModuleReactionWheel" RETURN True.
+		}
+	}
+	RETURN False.
+}
+
 function partsHasTermometer {
 // Checks if ship have required sensors:
 // - Termometer
