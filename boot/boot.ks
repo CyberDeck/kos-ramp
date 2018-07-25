@@ -13,6 +13,8 @@
 // It expects the RAMP scripts files to be saved in 0:/ramp folder.
 /////////////////////////////////////////////////////////////////////////////
 
+ON AG10 REBOOT.
+
 // Print informational message.
 function bootConsole {
   parameter msg.

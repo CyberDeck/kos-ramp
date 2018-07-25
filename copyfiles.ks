@@ -4,21 +4,76 @@
 // Copy all scripts to local volume
 /////////////////////////////////////////////////////////////////////////////
 
-LIST FILES IN fls.
-LOCAL fSize is 0.
-FOR f IN fls {
-  IF f:NAME:ENDSWITH(".ks") {
-    SET fSize to fSize + f:SIZE.
-    DELETEPATH("1:" + f:NAME).
-    DELETEPAHT("1:" + f:NAME:REPLACE(".ks", ".ksm").
+@lazyglobal off.
+
+LOCAL includeList IS LIST().
+
+includeList:add("lib_ui").
+includeList:add("lib_parts").
+includeList:add("lib_util").
+
+IF ship:STATUS = "PRELAUNCH" {
+  includeList:add("launch.ks").
+
+  IF(KUniverse:ORIGINEDITOR = "SPH" OR Ship:Name:TOUPPER:Contains("SSTO")) {
+    includeList:add("launch_ssto").
+  } ELSE {
+    includeList:add("launch_asc").
+    includeList:add("lib_staging").
+    includeList:add("lib_warp").
+    includeList:add("circ.ks").
+    includeList:add("node.ks").
   }
 }
+
+
+DECLARE FUNCTION includeFile {
+  PARAMETER fileName.
+
+  FOR f IN includeList {
+    if(fileName:CONTAINS(f)) {
+      PRINT("Copying " + fileName).
+      RETURN True.
+    }
+  }
+
+  RETURN False.
+}
+
+LOCAL copyFiles IS LIST().
+LOCAL libs IS LIST().
+LOCAL fls IS LIST().
+
+LIST FILES IN fls.
+LOCAL fSize IS 0.
+FOR f IN fls {
+  IF f:NAME:ENDSWITH(".ks") {
+    DELETEPATH("1:" + f:NAME).
+    DELETEPATH("1:" + f:NAME:REPLACE(".ks", ".ksm")).
+    IF includeFile(f:NAME) {
+      SET fSize to fSize + f:SIZE.
+      copyFiles:ADD(f:NAME).
+    }
+  }
+}
+CD("lib").
+LIST FILES IN libs.
+FOR f IN libs {
+  IF f:NAME:ENDSWITH(".ks") {
+    DELETEPATH("1:/lib/" + f:NAME).
+    DELETEPATH("1:/lib/" + f:NAME:REPLACE(".ks", ".ksm")).
+    IF includeFile("lib/" + f:NAME) {
+      SET fSize to fSize + f:SIZE.
+      copyFiles:ADD("lib/" + f:NAME).
+    }
+  }
+}
+CD("..").
 IF core:volume:freespace > fSize {
   SET copyFilesOk TO True.
-  FOR f IN fls {
-    IF f:NAME:ENDSWITH(".ks") {
-      IF NOT COPYPATH(f, HD) { SET copyFilesOk TO False. }.
-    }
+  IF NOT EXISTS("1:/lib") CREATEDIR("1:/lib").
+  FOR f IN copyFiles {
+    IF NOT COPYPATH("0:/" + f, "1:/" + f) { SET copyFilesOk TO False. }.
   }
 } ELSE {
   print("Core volume too small.").

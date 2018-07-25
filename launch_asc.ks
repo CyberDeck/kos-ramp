@@ -10,6 +10,8 @@ parameter apo is 200000.
 // Heading during launch (90 for equatorial prograde orbit)
 parameter hdglaunch is 90.
 
+ON AG10 reboot.
+
 // Roll/rotation during launch
 local function defaultRotation {
 	// do not rotate the rocket 180° if we are already facing the proper way

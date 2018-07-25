@@ -7,6 +7,8 @@
 run once "lib/lib_ui".
 run once "lib/lib_util".
 
+ON AG10 reboot.
+
 if ship:body <> target:body {
   uiError("Rendezvous", "Target outside of SoI").
   wait 5.

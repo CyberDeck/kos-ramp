@@ -5,6 +5,8 @@
 // default is zero or match target if selected
 parameter incl is "".
 
+ON AG10 reboot.
+
 runOncePath("lib/lib_util").
 utilRemoveNodes().
 

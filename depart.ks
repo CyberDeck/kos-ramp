@@ -10,6 +10,8 @@
 
 Parameter DockPort is 0. 
 
+ON AG10 reboot.
+
 runoncepath("lib/lib_dock").
 runoncepath("lib/lib_util").
 runoncepath("lib/lib_ui").

@@ -29,6 +29,8 @@ PARAMETER LandMode is "TARG".
 PARAMETER LandLat is ship:geoposition:lat.  
 PARAMETER LandLng is ship:geoposition:lng.
 
+ON AG10 reboot.
+
 runoncepath("lib/lib_ui").
 runoncepath("lib/lib_util").
 runoncepath("lib/lib_land").

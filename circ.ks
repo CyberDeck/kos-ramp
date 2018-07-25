@@ -4,6 +4,8 @@
 // Circularizes at the nearest apoapsis or periapsis
 /////////////////////////////////////////////////////////////////////////////
 
+ON AG10 REBOOT.
+
 run once "lib/lib_ui".
 run once "lib/lib_util".
 

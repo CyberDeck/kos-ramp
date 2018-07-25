@@ -4,6 +4,8 @@
 // Kills transverse velocity w/r/t target and establishes forward velocity.
 /////////////////////////////////////////////////////////////////////////////
 
+ON AG10 reboot.
+
 runoncepath("lib/lib_util").
 runoncepath("lib/lib_dock").
 runoncepath("lib/lib_ui").

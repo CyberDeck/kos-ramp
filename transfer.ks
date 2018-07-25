@@ -4,6 +4,8 @@
 // Hohmann transfer to a satellite of the vessel's SoI body.
 /////////////////////////////////////////////////////////////////////////////
 
+ON AG10 reboot.
+
 run once "lib/lib_ui".
 
 if ship:body <> target:body {

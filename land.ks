@@ -4,6 +4,8 @@
 // Make groundfall
 /////////////////////////////////////////////////////////////////////////////
 
+ON AG10 reboot.
+
 run once "lib/lib_ui".
 
 global land_slip    is 0.05. // transverse speed @ touchdown (m/s)

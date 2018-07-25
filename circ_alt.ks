@@ -7,6 +7,8 @@
 
 parameter alt.
 
+ON AG10 REBOOT.
+
 if obt:eccentricity < 0.001 { // For (almost) circular orbits, just change the altitude and recircularize
   run node_alt(alt).
   local prograde is nextnode:prograde.

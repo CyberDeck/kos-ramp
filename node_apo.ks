@@ -8,4 +8,6 @@
 parameter alt.
 parameter nodetime is time:seconds + eta:periapsis.
 
+ON AG10 reboot.
+
 run node_alt(alt, nodetime).

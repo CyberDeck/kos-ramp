@@ -8,6 +8,8 @@
 parameter alt.
 parameter nodetime is time:seconds + 120.
 
+ON AG10 reboot.
+
 local mu is body:mu.
 local br is body:radius.
 

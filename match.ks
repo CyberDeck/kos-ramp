@@ -9,4 +9,6 @@ run once "lib/lib_ui".
 run once "lib/lib_util".
 run once "lib/lib_dock".
 
+ON AG10 reboot.
+
 dockMatchVelocity(0).

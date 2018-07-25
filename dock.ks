@@ -11,6 +11,7 @@
 // approaches at a slow speed.
 /////////////////////////////////////////////////////////////////////////////
 
+ON AG10 reboot.
 
 runoncepath("lib/lib_ui").
 runoncepath("lib/lib_dock").

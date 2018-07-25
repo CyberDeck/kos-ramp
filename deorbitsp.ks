@@ -1,5 +1,7 @@
 PARAMETER DeorbitLongOffset IS 0. // Diference from the default deorbit longitude.
 
+ON AG10 reboot.
+
 runoncepath("lib/lib_ui").
 runoncepath("lib/lib_parts").
 runoncepath("lib/lib_util").

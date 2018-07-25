@@ -4,6 +4,8 @@
 parameter MaxOrbitsToTransfer is 5.
 parameter MinLeadTime is 30.
 
+ON AG10 reboot.
+
 runoncepath("lib/lib_ui").
 runoncepath("lib/lib_util").
 

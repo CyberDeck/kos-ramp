@@ -15,6 +15,8 @@
 parameter nodeCreator is false. // delegate to re-create node if needed
 parameter burnTime is 0. // estimated burn time, lib_staging:burnTimeForDt used if zero
 
+ON AG10 reboot.
+
 run once "lib/lib_ui".
 run once "lib/lib_util".
 run once "lib/lib_warp".

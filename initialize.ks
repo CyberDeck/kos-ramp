@@ -9,9 +9,6 @@ IF HOMECONNECTION:ISCONNECTED {
         PRINT "To run mission immediately:".
         PRINT "  REBOOT.".
     }
-    ELSE {
-        REBOOT.
-    }
 }
 ELSE {
     PRINT "Can't open the archive. Extend antennas or get closer to Kerbin.".

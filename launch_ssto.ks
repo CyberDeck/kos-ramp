@@ -3,6 +3,8 @@
 Parameter TGTApoapsis is 150000.
 Parameter TGTHeading is 90.
 
+ON AG10 reboot.
+
 //Libraries
 runoncepath("lib/lib_ui").
 runoncepath("lib/lib_parts").

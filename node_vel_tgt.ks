@@ -10,6 +10,8 @@
 run once "lib/lib_ui".
 run once "lib/lib_util".
 
+ON AG10 reboot.
+
 // Figure out some basics
 local T is utilClosestApproach(ship, target).
 local Vship is velocityat(ship, T):orbit.

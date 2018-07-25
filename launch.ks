@@ -6,6 +6,7 @@
 parameter Apo is 200000.
 parameter hdg is 90.
 
+ON AG10 reboot.
 
 if KUniverse:ORIGINEDITOR = "SPH" or Ship:Name:Contains("SSTO") {
     runpath("launch_ssto",apo,hdg).

@@ -3,6 +3,8 @@
 Parameter MaxSpeed is 28.
 Parameter WaypointTolerance is 5.
 
+ON AG10 reboot.
+
 runoncepath("lib/lib_ui").
 
 local AllFiles is list().

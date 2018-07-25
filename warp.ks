@@ -7,6 +7,8 @@
 
 declare parameter dt.
 
+ON AG10 reboot.
+
 set TW to kuniverse:timewarp.
 
 if dt > 0 {

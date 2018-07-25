@@ -2,6 +2,8 @@
 
 runoncepath("lib/lib_ui").
 
+ON AG10 reboot.
+
 local AllTargets is List().
 local ValidTargets is List().
 local Names is List().
