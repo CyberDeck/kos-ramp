@@ -9,7 +9,7 @@
 // archive-free operation.
 //
 // Nevertheless, every time this boots, it will try to copy the files again,
-// if possible.
+// IF possible.
 // It expects the RAMP scripts files to be saved in 0:/ramp folder.
 /////////////////////////////////////////////////////////////////////////////
 
@@ -70,99 +70,97 @@ SET Failsafe TO false.
 
 bootConsole("Attemping to connect to KSC...").
 IF HOMECONNECTION:ISCONNECTED {
-	bootConsole("Connected to KSC, copying updated files...").
-	SET ARC TO VOLUME(0).
-	SWITCH TO ARC.
+  bootConsole("Connected to KSC, copying updated files...").
+  SET ARC TO VOLUME(0).
+  SWITCH TO ARC.
 
   IF EXISTS("ramp") {
-	  CD ("ramp").
+    CD ("ramp").
   } ELSE IF EXISTS("kos-ramp") {
     CD ("kos-ramp").
   }
 
   LOCAL copyok is TRUE.
-	LIST FILES IN fls.
+  LIST FILES IN fls.
   LOCAL fSize is 0.
   FOR f IN fls {
     IF f:NAME:ENDSWITH(".ks") {
       SET fSize to fSize + f:SIZE.
     }
   }
-  if core:volume:freespace > fSize {
-  	FOR f IN fls {
+  IF core:volume:freespace > fSize {
+    FOR f IN fls {
       IF f:NAME:ENDSWITH(".ks") {
         IF NOT COPYPATH(f,HD) { COPYOK OFF. }.
       }
-  	}
-  	IF copyok {
-  		bootConsole("RAMP initialized.").
-  	}
-  	ELSE {
-  		bootWarning("File copy failed.").
+    }
+    IF copyok {
+      bootConsole("RAMP initialized.").
+    }
+    ELSE {
+      bootWarning("File copy failed.").
       failsafe on.
-  	}
-  } else {
+    }
+  } ELSE {
     bootWarning("Core volume too small.").
     failsafe on.
   }
-}
-ELSE {
-	bootConsole("No connection to KSC detected.").
-	IF EXISTS(StartupLocalFile) {
-		bootConsole("Local RAMP startup, proceeding.").
-	}
-	ELSE {
-		bootConsole("RAMP not detected; extend antennas and reboot...").
-		IF Career():CANDOACTIONS {
-			FOR P IN SHIP:PARTS {
-				IF P:MODULES:CONTAINS("ModuleDeployableAntenna") {
-					LOCAL M IS P:GETMODULE("ModuleDeployableAntenna").
-					FOR A IN M:ALLACTIONNAMES() {
-						IF A:CONTAINS("Extend") { M:DOACTION(A,True). }
-					}.
-				}
-			}.
-			REBOOT.
-		}
-		ELSE {
-			bootError("Cannot contact KSC. Add antennas?").
-		}
-	}
+} ELSE {
+  bootConsole("No connection to KSC detected.").
+  IF EXISTS(StartupLocalFile) {
+    bootConsole("Local RAMP startup, proceeding.").
+  }
+  ELSE {
+    bootConsole("RAMP not detected; extend antennas...").
+    IF Career():CANDOACTIONS {
+      FOR P IN SHIP:PARTS {
+        IF P:MODULES:CONTAINS("ModuleDeployableAntenna") {
+          LOCAL M IS P:GETMODULE("ModuleDeployableAntenna").
+          FOR A IN M:ALLACTIONNAMES() {
+            IF A:CONTAINS("Extend") { M:DOACTION(A,True). }
+          }.
+        }
+      }.
+      bootError("Please reboot core when KSC is connected.").
+    } ELSE {
+      bootError("Cannot contact KSC. Add antennas?").
+    }
+  }
 }
 
 LOCAL StartupOk is FALSE.
 
 bootConsole("Looking for remote startup script...").
 IF HOMECONNECTION:ISCONNECTED {
-	LOCAL StartupScript is PATH("0:/start/"+SHIP:NAME).
-	IF EXISTS(StartupScript) {
-		bootConsole("Copying remote startup script from archive.").
+  LOCAL StartupScript is PATH("0:/start/"+SHIP:NAME).
+  IF EXISTS(StartupScript) {
+    bootConsole("Copying remote startup script from archive.").
     SWITCH TO HD.
-		IF COPYPATH(StartupScript, StartupLocalFile) {
-			StartupOk ON.
-		}
-		ELSE {
-			bootConsole("Startup file copy failed. Is there enough space?").
-		}
-	}
-	ELSE {
+    IF COPYPATH(StartupScript, StartupLocalFile) {
+      StartupOk ON.
+    }
+    ELSE {
+      bootConsole("Startup file copy failed. Is there enough space?").
+    }
+  }
+  ELSE {
     PRINT "--------------------------------------".
-		PRINT "No remote startup script found.".
-		PRINT "You can create a sample one by typing:".
-		PRINT "  RUN initialize.".
+    PRINT "No remote startup script found.".
+    PRINT "You can create a sample one by typing:".
+    PRINT "  RUN initialize.".
     PRINT "--------------------------------------".
-	}
+  }
 }
 ELSE {
   SWITCH TO HD.
-	IF EXISTS(StartupLocalFile) {
-		bootConsole("Using local startup script copied from archive.").
-		StartupOk ON.
-	}
-	ELSE
-	{
-		bootError("Cannot find RAMP scripts or connect to KSC; please restart mission!").
-	}
+  IF EXISTS(StartupLocalFile) {
+    bootConsole("Using local startup script copied from archive.").
+    StartupOk ON.
+  }
+  ELSE
+  {
+    bootError("Cannot find RAMP scripts or connect to KSC; please restart mission!").
+  }
 }
 
 IF Failsafe {
@@ -174,7 +172,7 @@ ELSE {
 }
 
 IF StartupOk {
-	RUNPATH(StartupLocalFile).
+  RUNPATH(StartupLocalFile).
 }
 ELSE {
   bootWarning("Need user input; see kOS console.").
