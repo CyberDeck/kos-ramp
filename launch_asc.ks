@@ -11,6 +11,7 @@ local function defaultApo {
 	return min(15000, body:radius * 0.08).
 }
 parameter apo is defaultApo().
+if apo = 0 set apo to defaultApo().
 
 // Heading during launch (90 for equatorial prograde orbit)
 parameter hdglaunch is 90.
