@@ -42,15 +42,15 @@ if not hasNode {
 }
 local nn is nextnode.
 
-// keep ship pointed at node
-sas off.
-lock steerDir to lookdirup(nn:deltav, positionAt(ship,time:seconds+nn:eta)-body:position).
-lock steering to steerDir.
-
 // estimate burn direction & duration
 local resetBurnTime is burnTime = 0.
 if resetBurnTime set burnTime to burnTimeForDv(nn:deltav:mag).
 local dt is burnTime/2.
+
+// keep ship pointed at node
+sas off.
+lock steerDir to lookdirup(nn:deltav, positionAt(ship,time:seconds+nn:eta)-body:position).
+lock steering to steerDir.
 
 local function faceManeuverNode {
 	// If have time, wait to ship almost align with maneuver node.

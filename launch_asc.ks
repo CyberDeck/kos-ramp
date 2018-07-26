@@ -126,7 +126,6 @@ until ship:obt:apoapsis >= apo {
 	}
 	wait 0.
 }
-uiBanner("ascend", "Engine cutoff").
 unlock throttle.
 set ship:control:pilotmainthrottle to 0.
 
