@@ -32,9 +32,24 @@ if not ship:status = "ORBITING" {
 } else if hastarget and TargetVessel:Distance >= KUNIVERSE:DEFAULTLOADDISTANCE:ORBIT:UNPACK and Target:Distance < MaxDistanceToApproach {
   uiWarning("Dock", "Target too far, approaching.").
   run approach.
-} else {
-  uiError("Dock","No target selected").
+} else if not hastarget {
+  uiError("Dock", "No target selected").
   DockingDone on.
+}
+
+global dock_myPort is dockChoosePorts().
+global dock_hisPort is target.
+
+if dock_myPort = 0 {
+  if ship:partsnamed("GrapplingDevice"):length < 1 {
+    uiError("Grab", "No Docking port or AGU on ship").
+    GrabbingDone on.
+  } else {
+    global dock_myPort is ship:partsnamed("GrapplingDevice")[0].
+    dock_myPort:GetModule("ModuleGrappleNode"):DoEvent("Control from here").
+    local m is dock_myPort:GetModule("ModuleAnimateGeneric").
+    if m:AllEventNames:Contains("Arm") m:DoEvent("Arm").
+  }
 }
 
 // maybe we just had to approach, re-check distance
@@ -43,17 +58,14 @@ if hastarget and TargetVessel:Distance > MaxDistanceToApproach {
   DockingDone on.
 }
 
+local needBack is true.
 until DockingDone {
-  global dock_myPort is dockChoosePorts().
-  global dock_hisPort is target.
-
   if dock_myPort <> 0 {
-    global dock_station is dock_hisPort:ship.
+    global dock_station is TargetVessel.
     uiBanner("Dock", "Dock with " + dock_station:name).
     dockPrepare(dock_myPort, target).
 
     until dockComplete(dock_myPort) or not hastarget or target <> dock_hisPort {
-
       local rawD is target:position - dock_myPort:position.
       local sense is ship:facing.
 
@@ -70,22 +82,16 @@ until DockingDone {
       ).
       local needAlign is (abs(dockD:x) > abs(dockD:z)/10) or (abs(dockD:y) > abs(dockD:z)/10).
 
-      // Avoid errors just after docking complete; hastarget is unreliable
-      // (maybe due to preemptible VM) and so we also put in a distance-based
-      // safeguard.
-      if hastarget and dockD:mag > 1 {
-        uiShowPorts(dock_myPort, target, dock_start / 2, not needAlign).
-        uiShowPorts(dock_myPort, target, dock_start / 2, not needAlign).
-        uiDebugAxes(dock_myPort:position, sense, v(10,10,10)).
-        uiDebugAxes(dock_myPort:position, sense, v(10,10,10)).
+      if needBack and dockD:Z > 5 {
+        set needBack to false.
       }
 
-      if dockD:Z < 0 {
+      if needBack {
         dockBack(dockD, dockV).
       } else if needAlign or dockD:Z > dock_start {
         dockAlign(dockD, dockV).
       } else {
-        dockApproach(dockD, dockV,dock_myPort).
+        dockApproach(dockD, dockV, dock_myPort).
       }
       wait 0.
     }

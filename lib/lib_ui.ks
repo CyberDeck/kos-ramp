@@ -75,7 +75,10 @@ function uiShowPorts {
 
   if myPort <> 0 {
     set ui_myPort:start to myPort:position.
-    set ui_myPort:vec to myPort:portfacing:vector*dist.
+    local facing is 0.
+    if myPort:typename = "DockingPort" set facing to myPort:portfacing.
+    else set facing to myPort:facing.
+    set ui_myPort:vec to facing:vector*dist.
     if ready {
       set ui_myPort:color to GREEN.
     } else {
@@ -88,7 +91,10 @@ function uiShowPorts {
 
   if hisPort <> 0 {
     set ui_hisPort:start to hisPort:position.
-    set ui_hisPort:vec to hisPort:portfacing:vector*dist.
+    local facing is 0.
+    if hisPort:typename = "DockingPort" set facing to hisPort:portfacing.
+    else set facing to hisPort:facing.
+    set ui_hisPort:vec to facing:vector*dist.
     set ui_hisPort:show to true.
   } else {
     set ui_hisPort:show to false.
@@ -136,38 +142,6 @@ function uiDebugNode {
     uiDebug(msg).
     wait(0.25).
     remove(nd).
-  }
-}
-
-function uiDebugAxes {
-  parameter origin.
-  parameter dir.
-  parameter length.
-
-  if ui_debugAxes = true {
-    if length:x <> 0 {
-      set ui_DebugStb:start to origin.
-      set ui_DebugStb:vec to dir:starvector*length:x.
-      set ui_DebugStb:show to true.
-    } else {
-      set ui_DebugStb:show to false.
-    }
-
-    if length:y <> 0 {
-      set ui_DebugUp:start to origin.
-      set ui_DebugUp:vec to dir:upvector*length:y.
-      set ui_DebugUp:show to true.
-    } else {
-      set ui_DebugUp:show to false.
-    }
-
-    if length:z <> 0 {
-      set ui_DebugFwd:start to origin.
-      set ui_DebugFwd:vec to dir:vector*length:z.
-      set ui_DebugFwd:show to true.
-    } else {
-      set ui_DebugFwd:show to false.
-    }
   }
 }
 
