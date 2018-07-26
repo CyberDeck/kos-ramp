@@ -52,47 +52,53 @@ local resetBurnTime is burnTime = 0.
 if resetBurnTime set burnTime to burnTimeForDv(nn:deltav:mag).
 local dt is burnTime/2.
 
-local warpLoop is 2.
-until false {
+local function faceManeuverNode {
 	// If have time, wait to ship almost align with maneuver node.
 	// If have little time, wait at least to ship face in general direction of node
 	// This prevents backwards burns, but still allows steering via engine thrust.
 	// If ship is not rotating for some reason, will proceed anyway. (Maybe only torque source is engine gimbal?)
 	wait 0.
-	local warped to false.
-	until utilIsShipFacing(steerDir,node_bestFacing,0.5) or
-		nn:eta <= dt and utilIsShipFacing(steerDir,node_okFacing,5) or
-		ship:angularvel:mag < 0.0001 and rcs = true
+	local facingWarped to false.
+	until utilIsShipFacing(steerDir,node_bestFacing,0.5)
+		or nn:eta <= dt and utilIsShipFacing(steerDir,node_okFacing,5)
+		or ship:angularvel:mag < 0.0001 and rcs = true
 	{
 		if ship:angularvel:mag < 0.01 rcs on.
 		stagingCheck().
-		if not warped { set warped to true. physWarp(1). }
+		if not facingWarped { set facingWarped to true. physWarp(1). }
 		wait 0.
 	}
-	if warped resetWarp().
-	if warpLoop = 0 break.
-	if warpLoop > 1 {
-		if (warpSeconds(nn:eta - dt - 60) > 600 and nodeCreator:istype("delegate")) {
-		//	recreate node if warped more than 10 minutes and we have node creator delegate
-			unlock steering. // release references before deleting nodes
-			unlock steerDir.
-			set nn to false.
-			utilRemoveNodes().
-			nodeCreator().
-			wait 0.
-			set nn to nextnode.
-			if resetBurnTime set burnTime to burnTimeForDv(nn:deltav:mag).
-			set dt to burnTime/2.
-			sas off.
-			lock steerDir to lookdirup(nn:deltav, positionAt(ship,time:seconds+nn:eta)-body:position).
-			lock steering to steerDir.
-		}
-		set warpLoop to 1.
-	} else {
-		warpSeconds(nn:eta - dt - 10).
-		break.
-	}
+	resetWarp().
 }
+
+local function recreateManeuverNode {
+	// recreate node if warped more than 10 minutes and we have node creator delegate
+	unlock steering. // release references before deleting nodes
+	unlock steerDir.
+	set nn to false.
+	utilRemoveNodes().
+	nodeCreator().
+	wait 0.
+	set nn to nextnode.
+	if resetBurnTime set burnTime to burnTimeForDv(nn:deltav:mag).
+	set dt to burnTime/2.
+	sas off.
+	lock steerDir to lookdirup(nn:deltav, positionAt(ship,time:seconds+nn:eta)-body:position).
+	lock steering to steerDir.
+}
+
+faceManeuverNode().
+if(nn:eta - dt - 60 > 600 and nodeCreator:istype("delegate")) {
+	warpSeconds(nn:eta - dt - 60).
+	wait until nn:eta - dt - 60 < 60.
+	recreateManeuverNode().
+	faceManeuverNode().
+}
+
+warpSeconds(nn:eta - dt - 10).
+wait until nn:eta - dt < 10.
+
+stagingPrepare().
 
 local dv0 is nn:deltav.
 local dvMin is dv0:mag.
@@ -113,7 +119,7 @@ if nn:eta-dt > 5 {
 wait until nn:eta-dt <= 1.
 until dvMin < 0.05
 {
-	if stagingCheck() uiWarning("Node", "Stage " + stage:number + " separation during burn").
+	stagingCheck().
 	wait 0. //Let a physics tick run each loop.
 
 	local dv is nn:deltav:mag.
@@ -130,9 +136,9 @@ until dvMin < 0.05
 			set maxThrottle to 0.1.
 			rcs on.
 	 	}
-		if vdot(dv0, nn:deltaV) < 0 break.	// overshot (node delta vee is pointing opposite from initial)
-		if dv > dvMin + 0.1 break.			// burn DV increases (off target due to wobbles)
-		if dv <= 0.2 {						// burn DV gets too small for main engines to cope with
+		if vdot(dv0, nn:deltaV) < 0 break.	// overshot (node deltaV is pointing opposite from initial)
+		if dv > dvMin + 0.1 break.		// burn DV increases (off target due to wobbles)
+		if dv <= 0.2 {				// burn DV gets too small for main engines to cope with
 			if almostThere = 0 set almostThere to time:seconds.
 			if time:seconds-almostThere > 5 break.
 			if dv <= 0.05 break.
@@ -144,8 +150,10 @@ until dvMin < 0.05
 			set warned to true.
 			uiWarn("Node", "No acceleration").
 		}
-		if time:seconds-choked > 30
+		if time:seconds-choked > 30 {
 			uiFatal("Node", "No acceleration").
+			break.
+		}
 	}
 }
 
