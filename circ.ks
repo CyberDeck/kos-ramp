@@ -32,14 +32,10 @@ else if apoapsis > 0 and eta:apoapsis < eta:periapsis
 	set dt to burnTimeForDv(dv)/2.
 	uiBanner("Circ", "Coast to apoapsis.").
 	IF partsHasReactionWheels() wait until utilIsShipFacing(v0) OR eta:apoapsis < dt - 30.
-	warpSeconds2(eta:apoapsis - dt - 30).
-	wait until eta:apoapsis - dt < 30.
-	resetWarp().
+	warpSeconds(eta:apoapsis - dt - 30).
 	lock steering to prograde.
 	wait until utilIsShipFacing(prograde:forevector).
-	warpSeconds2(eta:apoapsis - dt - 5).
-	wait until eta:apoapsis <= dt + 0.1.
-	resetWarp().
+	warpSeconds(eta:apoapsis - dt - 5).
 	uiBanner("Circ", "Burn to raise periapsis.").
 	local function circSteering {
 		if eta:apoapsis < eta:periapsis {

@@ -89,16 +89,12 @@ local function recreateManeuverNode {
 
 faceManeuverNode().
 if(nn:eta - dt - 60 > 600 and nodeCreator:istype("delegate")) {
-	warpSeconds2(nn:eta - dt - 60).
-	wait until nn:eta - dt - 60 < 60.
-	resetWarp().
+	warpSeconds(nn:eta - dt - 60).
 	recreateManeuverNode().
 	faceManeuverNode().
 }
 
-warpSeconds2(nn:eta - dt - 10).
-wait until nn:eta - dt < 10.
-resetWarp().
+warpSeconds(nn:eta - dt - 10).
 
 stagingPrepare().
 
