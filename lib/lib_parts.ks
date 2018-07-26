@@ -114,7 +114,8 @@ function partsControlFromDockingPort {
 }
 
 function partsDeployFairings {
-	return partsDoEvent("ModuleProceduralFairing", "deploy").
+	return partsDoEvent("ModuleProceduralFairing", "deploy") or partsDoEvent("ProceduralFairingDecoupler", "jettison").
+
 }
 
 function partsHasReactionWheels {
