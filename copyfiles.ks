@@ -35,6 +35,8 @@ IF ship:STATUS = "PRELAUNCH" OR ship:STATUS = "LANDED" {
   includeList:add("transfer").
   includeList:add("land").
   includeList:add("circ").
+  includeList:add("dock").
+  includeList:add("approach").
 }
 
 DECLARE FUNCTION includeFile {
