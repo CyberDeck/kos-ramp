@@ -9,11 +9,11 @@ ON AG10 REBOOT.
 runoncepath("lib/lib_ui").
 runoncepath("lib/lib_util").
 
-if Career():canMakeNodes and periapsis > max(body:atm:height,1000)
+if Career():canMakeNodes and periapsis > max(body:atm:height, 1000)
 {
 	utilRemoveNodes().
 	if obt:transition = "ESCAPE" or eta:periapsis < eta:apoapsis
-    	run node({run node_apo(obt:periapsis).}).
+    		run node({run node_apo(obt:periapsis).}).
   	else run node({run node_peri(obt:apoapsis).}).
 	uiBanner("Circ", "Circularized; e=" + round(ship:obt:eccentricity, 3)).
 }
