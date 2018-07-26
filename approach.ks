@@ -9,6 +9,7 @@ ON AG10 reboot.
 runoncepath("lib/lib_util").
 runoncepath("lib/lib_dock").
 runoncepath("lib/lib_ui").
+runoncepath("lib/lib_warp").
 
 //Those functions are for use by this program ONLY!
 function CancelVelT {
@@ -87,9 +88,9 @@ function BrakeForEncounter {
   local stopDistance is 0.5 * accel * (vel:mag / accel)^2.
   local dt is ((target:position:mag - stopDistance) / vel:mag) - 5.
   if dt > 0 {
-    if dt > 60 {
+    if dt > 20 {
       uiBanner("Maneuver", "Warping to brake").
-      runpath("warp",dt).
+      warpSeconds(dt).
     }
     else {
       uiBanner("Maneuver", "Waiting " + round(dt) + " seconds to brake").
