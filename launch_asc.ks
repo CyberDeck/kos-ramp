@@ -50,27 +50,31 @@ function ascentSteering {
 // Throttle function for continuous lock.
 /////////////////////////////////////////////////////////////////////////////
 
+local maxQ is 0.3.
+local pidMaxQ is PIDLOOP(0.05).
+set pidMaxQ:setpoint to maxQ.
+local thr is 1.
+local controlQ is False.
 function ascentThrottle {
-//	angle of attack
-	local aoa is vdot(ship:facing:vector, ship:velocity:surface).
-//	how far through the soup are we?
-	local atmPct is ship:altitude / (body:atm:height+1).
-	local spd is ship:airspeed.
-
-//	TODO: adjust cutoff for atmospheric pressure; this works for kerbin
-	local cutoff is 200 + (400 * max(0, (atmPct*3))).
-
-	if spd > cutoff {
-	//	going too fast - avoid overheat or aerodynamic catastrophe
-	//	by limiting throttle but not less than 10% to keep some gimbaling
-		return 1 - max(0.1, ((spd - cutoff) / cutoff)).
-	} else {
-	//	Ease throttle when near the Apoapsis
-		local ApoPercent is ship:obt:apoapsis/apo.
-		local ApoCompensation is 0.
-		if ApoPercent > 0.9 set ApoCompensation to (ApoPercent - 0.9) * 10.
-		return 1.05 - min(1,max(0,ApoCompensation)).
+	// reaching apoapsis
+	local ApoPercent is ship:obt:apoapsis/apo.
+	if ApoPercent > 0.9 {
+		local ApoCompensation is (ApoPercent - 0.9) * 10.
+		set thr to 1.05 - min(1, max(0, ApoCompensation)).
+		return thr.
 	}
+
+	if ship:q > maxQ * 0.8 set controlQ to True.
+	if(controlQ and ship:q < 0.2) set controlQ to False.
+
+	if controlQ {
+		set thr to thr + pidMaxQ:update(time:seconds, ship:q).
+		set thr to max(0.1, min(thr, 1)).
+		return thr.
+	}
+	
+	set thr to 1.
+	return thr.
 }
 
 /////////////////////////////////////////////////////////////////////////////
