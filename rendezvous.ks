@@ -4,6 +4,8 @@
 // Maneuver close to another vessel orbiting the same body.
 /////////////////////////////////////////////////////////////////////////////
 
+@lazyglobal off.
+
 runoncepath("lib/lib_ui").
 runoncepath("lib/lib_util").
 

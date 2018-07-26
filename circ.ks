@@ -9,11 +9,11 @@ ON AG10 REBOOT.
 runoncepath("lib/lib_ui").
 runoncepath("lib/lib_util").
 
-if Career():canMakeNodes and periapsis > max(body:atm:height,1000)
+if Career():canMakeNodes and periapsis > max(body:atm:height, 1000)
 {
 	utilRemoveNodes().
 	if obt:transition = "ESCAPE" or eta:periapsis < eta:apoapsis
-    	run node({run node_apo(obt:periapsis).}).
+    		run node({run node_apo(obt:periapsis).}).
   	else run node({run node_peri(obt:apoapsis).}).
 	uiBanner("Circ", "Circularized; e=" + round(ship:obt:eccentricity, 3)).
 }
@@ -30,14 +30,11 @@ else if apoapsis > 0 and eta:apoapsis < eta:periapsis
 	// deltaV = required orbital speed minus predicted speed
 	set dv to sqrt(body:mu/(body:radius+apoapsis))-v0:mag.
 	set dt to burnTimeForDv(dv)/2.
-	uiBanner("Circ", "Coast to apoapsis.").
 	IF partsHasReactionWheels() wait until utilIsShipFacing(v0) OR eta:apoapsis < dt - 30.
 	warpSeconds(eta:apoapsis - dt - 30).
 	lock steering to prograde.
 	wait until utilIsShipFacing(prograde:forevector).
 	warpSeconds(eta:apoapsis - dt - 5).
-	wait until eta:apoapsis <= dt + 0.1.
-	uiBanner("Circ", "Burn to raise periapsis.").
 	local function circSteering {
 		if eta:apoapsis < eta:periapsis {
 		//	prevent raising apoapsis

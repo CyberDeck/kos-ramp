@@ -7,6 +7,7 @@
 ON AG10 reboot.
 
 runoncepath("lib/lib_ui").
+runoncepath("lib/lib_warp").
 
 if ship:body <> target:body {
   uiError("Transfer", "Target outside of SoI").
@@ -27,7 +28,7 @@ uiBanner("Transfer", "Transfer injection burn").
 run node.
 
 until obt:transition <> "ENCOUNTER" {
-  run warp(eta:transition+1).
+  warpSeconds(eta:transition + 1).
 }
 
 // Deal with collisions and retrograde orbits (sorry this script can't do free return)

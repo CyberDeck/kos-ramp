@@ -72,7 +72,7 @@ SET Failsafe TO false.
 
 bootConsole("Attemping to connect to KSC...").
 IF HOMECONNECTION:ISCONNECTED {
-  bootConsole("Connected to KSC, copying updated files...").
+  bootConsole("Connected to KSC, updating...").
   SET ARC TO VOLUME(0).
   SWITCH TO ARC.
 
@@ -101,7 +101,7 @@ IF HOMECONNECTION:ISCONNECTED {
           }.
         }
       }.
-      bootError("Please reboot core when KSC is connected.").
+      bootError("Please reboot when KSC is connected.").
     } ELSE {
       bootError("Cannot contact KSC. Add antennas?").
     }
@@ -134,7 +134,7 @@ IF HOMECONNECTION:ISCONNECTED {
 ELSE {
   SWITCH TO HD.
   IF EXISTS(StartupLocalFile) {
-    bootConsole("Using local startup script copied from archive.").
+    bootConsole("Using local storage.").
     StartupOk ON.
   }
   ELSE
@@ -155,6 +155,7 @@ IF StartupOk {
   RUNPATH(StartupLocalFile).
 }
 ELSE {
-  bootWarning("Need user input; see kOS console.").
-  PRINT "RAMP ready for commands:". PRINT "".
+  bootWarning("Need user input.").
+  CORE:PART:GETMODULE("kOSProcessor"):DOEVENT("Open Terminal").
 }
+

@@ -3,6 +3,8 @@
 Parameter TGTApoapsis is 150000.
 Parameter TGTHeading is 90.
 
+if TGTApoapsis is 0 set TGTApoapsis to 150000.
+
 ON AG10 reboot.
 
 //Libraries
