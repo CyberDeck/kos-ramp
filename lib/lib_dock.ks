@@ -149,20 +149,18 @@ function dockChoosePorts {
   local myPorts is list().
 
   // Docking port is already targeted
-  if target:istype("DockingPort") 
-     and target:state = "Ready" { 
+  if target:istype("DockingPort") and target:state = "Ready" { 
     hisPorts:add(target).
-  }
-  else if target:istype("Vessel") { // ship is targeted; list all free ports.
+  } else if target:istype("Vessel") { // ship is targeted; list all free ports.
     for port in target:dockingports { 
       if port:state = "Ready" hisPorts:add(port).
     }
   }
 
   // List all my ship ports not occupied. 
-  if SHIP:CONTROLPART:istype("DockingPort") and 
-  not SHIP:CONTROLPART:STATE:CONTAINS("docked") myPorts:add(SHIP:CONTROLPART).
-  else {  
+  if SHIP:CONTROLPART:istype("DockingPort") and not SHIP:CONTROLPART:STATE:CONTAINS("docked") {
+    myPorts:add(SHIP:CONTROLPART).
+  } else {  
     for port in ship:dockingports {
       if not port:state:contains("docked") myPorts:add(port).
     }
@@ -185,8 +183,7 @@ function dockChoosePorts {
         }
       }
     }
-  }
-  else{ // Target port was pre-selected. Just find a suitable port in my ship
+  } else{ // Target port was pre-selected. Just find a suitable port in my ship
     for myP in myPorts {
       if myPort = 0 and hisPort:NODETYPE = myP:NODETYPE {
         set myPort to myP. 
