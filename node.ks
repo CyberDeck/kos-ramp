@@ -49,7 +49,7 @@ local dt is burnTime/2.
 
 // keep ship pointed at node
 sas off.
-lock steerDir to lookdirup(nn:deltav, positionAt(ship,time:seconds+nn:eta)-body:position).
+local lock steerDir to lookdirup(nn:deltav, positionAt(ship,time:seconds+nn:eta)-body:position).
 lock steering to steerDir.
 
 local function faceManeuverNode {
@@ -83,8 +83,8 @@ local function recreateManeuverNode {
 	if resetBurnTime set burnTime to burnTimeForDv(nn:deltav:mag).
 	set dt to burnTime/2.
 	sas off.
-	lock steerDir to lookdirup(nn:deltav, positionAt(ship,time:seconds+nn:eta)-body:position).
-	lock steering to steerDir.
+	local lock steerDir to lookdirup(nn:deltav, positionAt(ship,time:seconds+nn:eta)-body:position).
+	local lock steering to steerDir.
 }
 
 faceManeuverNode().
