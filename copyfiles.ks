@@ -22,6 +22,7 @@ IF ship:STATUS = "PRELAUNCH" OR ship:STATUS = "LANDED" {
     includeList:add("launch_asc").
     includeList:add("lib_staging").
     includeList:add("lib_warp").
+    includeList:add("lib_launch_geo").
     includeList:add("circ.ks").
     includeList:add("node.ks").
   }
@@ -33,10 +34,8 @@ IF ship:STATUS = "PRELAUNCH" OR ship:STATUS = "LANDED" {
   includeList:add("warp").
   includeList:add("lib_staging").
   includeList:add("transfer").
-  includeList:add("land").
   includeList:add("circ").
-  includeList:add("dock").
-  includeList:add("approach").
+  includeList:add("rendezvous").
 }
 
 DECLARE FUNCTION includeFile {

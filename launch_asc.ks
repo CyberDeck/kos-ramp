@@ -10,7 +10,7 @@ local function defaultApo {
 	if body:atm:exists return body:atm:height + 10000.
 	return min(15000, body:radius * 0.08).
 }
-parameter apo is defaultApo().
+parameter apo is 0.
 if apo = 0 set apo to defaultApo().
 
 // Heading during launch (90 for equatorial prograde orbit)
@@ -32,7 +32,7 @@ runoncepath("lib/lib_util").
 runoncepath("lib/lib_warp").
 runoncepath("lib/lib_staging").
 
-uiBanner("ascend","Ascend to " + round(apo/1000) + "km; heading " + hdglaunch + "º").
+uiBanner("ascend", "Ascend to " + round(apo/1000) + "km; heading " + hdglaunch + "º").
 
 // Starting/ending height of gravity turn
 local launch_gt0 is body:atm:height * 0.007.
@@ -117,7 +117,7 @@ lock throttle to ascentThrottle().
 /////////////////////////////////////////////////////////////////////////////
 
 local warped to false.
-until ship:obt:apoapsis >= apo {
+until ship:obt:apoapsis >= apo or (ship:altitude > apo/2 and eta:apoapsis < 10) {
 	stagingCheck().
 	ascentDeploy().
 	if not warped and altitude > min(ship:body:atm:height/10,1000) {

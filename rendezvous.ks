@@ -9,6 +9,8 @@
 runoncepath("lib/lib_ui").
 runoncepath("lib/lib_util").
 
+parameter maxOrbitsToTransfer is 5.
+
 ON AG10 reboot.
 
 if ship:body <> target:body {
@@ -32,15 +34,14 @@ if target:position:mag > 25000 and approachX > 25000 {
     run node.
   }
 
-  uiDebug("Running Hohmann transfer node calculation").
-  run node_hoh.
+  run node_hoh(maxOrbitsToTransfer).
 
   local strandedcount is 0.
   until HASNODE {
     set strandedcount to strandedcount + 1.
     uiBanner("Rendezvous", "Transfer to phasing orbit").
     run circ_alt(target:altitude * 1.666 * strandedcount).
-    run node_hoh.
+    run node_hoh(maxOrbitsToTransfer).
   }
 
   uiBanner("Rendezvous", "Transfer injection burn").
@@ -49,18 +50,5 @@ if target:position:mag > 25000 and approachX > 25000 {
   uiBanner("Rendezvous", "Matching velocity at closest approach.").
   run node_vel_tgt.
   run node.
-
 }
 
-run approach.
-
-uiBanner("Rendezvous", "Approach to 150m").
-wait until target:position:mag < 150.
-
-run match.
-
-//Save before dock!
-wait until KUniverse:CanQuickSave().
-KUniverse:QuickSaveTo("RAMP-Before docking").
-
-run dock.

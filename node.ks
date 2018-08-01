@@ -27,11 +27,10 @@ stagingPrepare().
 // Configuration constants; these are pre-set for automated missions; if you
 // have a ship that turns poorly, you may need to decrease these and perform
 // manual corrections.
-if not (defined node_bestFacing)
-global node_bestFacing is 5.   // ~5  degrees error (10 degree cone)
-if not (defined node_okFacing)
-global node_okFacing   is 20.  // ~20 degrees error (40 degree cone)
+if not (defined node_bestFacing) global node_bestFacing is 5.   // ~5  degrees error (10 degree cone)
+if not (defined node_okFacing) global node_okFacing is 20.  // ~20 degrees error (40 degree cone)
 
+local steerDir is False.
 local sstate is sas. // save SAS state
 local rstate is rcs. // save RCS state
 
@@ -49,7 +48,7 @@ local dt is burnTime/2.
 
 // keep ship pointed at node
 sas off.
-local lock steerDir to lookdirup(nn:deltav, positionAt(ship,time:seconds+nn:eta)-body:position).
+lock steerDir to lookdirup(nn:deltav, positionAt(ship,time:seconds+nn:eta)-body:position).
 lock steering to steerDir.
 
 local function faceManeuverNode {
@@ -59,8 +58,8 @@ local function faceManeuverNode {
 	// If ship is not rotating for some reason, will proceed anyway. (Maybe only torque source is engine gimbal?)
 	wait 0.
 	local facingWarped to false.
-	until utilIsShipFacing(steerDir,node_bestFacing,0.5)
-		or nn:eta <= dt and utilIsShipFacing(steerDir,node_okFacing,5)
+	until utilIsShipFacing(steerDir, node_bestFacing, 0.5)
+		or nn:eta <= dt and utilIsShipFacing(steerDir, node_okFacing, 5)
 		or ship:angularvel:mag < 0.0001 and rcs = true
 	{
 		if ship:angularvel:mag < 0.01 rcs on.
@@ -83,8 +82,8 @@ local function recreateManeuverNode {
 	if resetBurnTime set burnTime to burnTimeForDv(nn:deltav:mag).
 	set dt to burnTime/2.
 	sas off.
-	local lock steerDir to lookdirup(nn:deltav, positionAt(ship,time:seconds+nn:eta)-body:position).
-	local lock steering to steerDir.
+	lock steerDir to lookdirup(nn:deltav, positionAt(ship,time:seconds+nn:eta)-body:position).
+	lock steering to steerDir.
 }
 
 faceManeuverNode().
@@ -124,7 +123,7 @@ until dvMin < 0.05
 	if dv < dvMin set dvMin to dv.
 
 	if ship:availablethrust > 0 {
-		if utilIsShipFacing(steerDir,node_okFacing,2) {
+		if utilIsShipFacing(steerDir, node_okFacing, 2) {
 			set minThrottle to 0.01.
 			set maxThrottle to 1.
 		} else {

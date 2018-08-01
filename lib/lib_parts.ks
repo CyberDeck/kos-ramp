@@ -138,7 +138,6 @@ function partsHasTermometer {
 	return HasT.
 }
 
-
 function partsDisarmsChutes {
 	// Make sure all chutes are disarmed, even if already staged.
 	// Warning: If chutes are staged and disarmed, SPACEBAR will not deploy they!

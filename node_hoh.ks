@@ -9,6 +9,8 @@ ON AG10 reboot.
 runoncepath("lib/lib_ui").
 runoncepath("lib/lib_util").
 
+local node_T is 0.
+
 // Compute prograde delta-vee required to achieve Hohmann transfer; < 0 means
 // retrograde burn.
 function hohmannDv {
@@ -20,7 +22,6 @@ function hohmannDv {
 
 // Compute time of Hohmann transfer window.
 function hohmannDt {
-
   local r1 is ship:obt:semimajoraxis.
   local r2 is target:obt:semimajoraxis.
 
@@ -31,8 +32,6 @@ function hohmannDt {
   local theta is 360 * ft.
   // necessary phase angle for vessel burn
   local phi is 180 - theta.
-
-  uiDebug("Phi:" + phi).
 
   // Angles to universal reference direction. (Solar prime)
   set sAng to ship:obt:lan+obt:argumentofperiapsis+obt:trueanomaly. 
@@ -52,23 +51,21 @@ function hohmannDt {
   local IsStranded is false.
   local tries is 0.
   until HasAcceptableTransfer or IsStranded {
-
       // Phase angle now.
       set pAng to utilReduceTo360(tAng - sAng).
-      uiDebug("pAng: " + pAng).
     
       if r1 < r2 { // Target orbit is higher
         set DeltaAng to utilReduceTo360(pAng - phi).
-      }
-      else { // Target orbit is lower
+      } else { // Target orbit is lower
         set DeltaAng to utilReduceTo360(phi - pAng).
       }
       set timeToHoH to abs(DeltaAng / phaseAngRoC).
-      uiDebug("TTHoh:" + timeToHoH).
 
-      if timeToHoH > ship:obt:period * MaxOrbitsToTransfer set IsStranded to true.
-      else if timeToHoH > MinLeadTime set HasAcceptableTransfer to true.
-      else {
+      if timeToHoH > ship:obt:period * MaxOrbitsToTransfer {
+          set IsStranded to true.
+      } else if timeToHoH > MinLeadTime {
+          set HasAcceptableTransfer to true.
+      } else {
           // Predict values in future
           set tAng to tAng + MinLeadTime*tAngSpd.
           set sAng to sAng + MinLeadTime*sAngSpd.
@@ -78,7 +75,9 @@ function hohmannDt {
       if IsStranded break.
   }
   if IsStranded return "Stranded".
-  else return timeToHoH + time:seconds.  
+  else {
+    return timeToHoH + time:seconds.  
+  }
 }
 
 if body <> target:body {
@@ -96,20 +95,10 @@ if abs(node_ri) > 0.2 {
   uiWarning("Node", "Bad alignment ri=" + round(node_ri, 1)).
 }
 
-uiDebug("Hohmann time").
-global node_T is hohmannDt().
-
-if node_T = "Stranded" {
-  uiError("Node", "STRANDED").
-}
-else {
-  uiDebug("Hohmann delta V").
-  uiDebug("Transfer eta=" + round(node_T - time:seconds, 0)).
-  uiDebug("Transfer dv0=" + round(hohmannDv, 1)).
-
+set node_T to hohmannDt().
+if node_T:typename = "Scalar" {
   local r1 is (positionat(ship,node_T)-body:position):mag.
   global node_dv is hohmannDv(r1).
-  uiDebug("Transfer dv1=" + round(node_dv, 1) + ", r1=" + round(r1)).
 
   local nd is node(node_T, 0, 0, node_dv).
   add nd.
@@ -117,5 +106,4 @@ else {
   local r2 is (positionat(target,node_T+nd:orbit:period/2)-body:position):mag.
   set node_dv to hohmannDv(r1,r2).
   set nd:prograde to node_dv.
-  uiDebug("Transfer dv2=" + round(node_dv, 1) + ", r2=" + round(r2)).
 }

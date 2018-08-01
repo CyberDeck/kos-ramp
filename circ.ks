@@ -15,7 +15,6 @@ if Career():canMakeNodes and periapsis > max(body:atm:height, 1000)
 	if obt:transition = "ESCAPE" or eta:periapsis < eta:apoapsis
     		run node({run node_apo(obt:periapsis).}).
   	else run node({run node_peri(obt:apoapsis).}).
-	uiBanner("Circ", "Circularized; e=" + round(ship:obt:eccentricity, 3)).
 }
 else if apoapsis > 0 and eta:apoapsis < eta:periapsis
 {
@@ -63,7 +62,6 @@ else if apoapsis > 0 and eta:apoapsis < eta:periapsis
 
 	if orbit:eccentricity > 0.1 or orbit:periapsis < max(body:atm:height,1000)
 		uiFatal("Circ", "Error; e=" + round(orbit:eccentricity, 3) + ", peri=" + round(periapsis)).
-	uiBanner("Circ", "Circularized; e=" + round(orbit:eccentricity, 3)).
 }
 else
 	uiError("Circ", "Either escape trajectory or closer to periapsis").//TODO

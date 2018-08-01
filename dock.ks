@@ -17,6 +17,15 @@ runoncepath("lib/lib_ui").
 runoncepath("lib/lib_dock").
 runoncepath("lib/lib_parts").
 
+run approach.
+wait until target:position:mag < 150.
+
+dockMatchVelocity(0).
+
+//Save before dock!
+wait until KUniverse:CanQuickSave().
+KUniverse:QuickSaveTo("Before docking").
+
 local DockingDone is False.
 local MaxDistanceToApproach is 5000.
 local TargetVessel is 0.
