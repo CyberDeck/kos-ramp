@@ -114,8 +114,8 @@ if nn:eta-dt > 5 {
 	resetWarp().
 }
 wait until nn:eta-dt <= 1.
-until dvMin < 0.05
-{
+local node_abort is false.
+until dvMin < 0.05 or node_abort {
 	stagingCheck().
 	wait 0. //Let a physics tick run each loop.
 
@@ -133,12 +133,12 @@ until dvMin < 0.05
 			set maxThrottle to 0.1.
 			rcs on.
 	 	}
-		if vdot(dv0, nn:deltaV) < 0 break.	// overshot (node deltaV is pointing opposite from initial)
-		if dv > dvMin + 0.1 break.		// burn DV increases (off target due to wobbles)
+		if vdot(dv0, nn:deltaV) < 0 set node_abort to true.	// overshot (node deltaV is pointing opposite from initial)
+		if dv > dvMin + 0.1 set node_abort to true.		// burn DV increases (off target due to wobbles)
 		if dv <= 0.2 {				// burn DV gets too small for main engines to cope with
 			if almostThere = 0 set almostThere to time:seconds.
 			if time:seconds-almostThere > 5 break.
-			if dv <= 0.05 break.
+			if dv <= 0.05 set node_abort to true.
 		}
 		set choked to 0.
 	} else {
@@ -149,7 +149,7 @@ until dvMin < 0.05
 		}
 		if time:seconds-choked > 30 {
 			uiFatal("Node", "No acceleration").
-			break.
+			set node_abort to true.
 		}
 	}
 }

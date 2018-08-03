@@ -30,9 +30,7 @@ function uiBanner {
     set ui_announce to time:seconds.
     set ui_announceMsg to msg.
     // Select a sound.
-    if      sound = 1 uiBeep().
-    else if sound = 2 uiChime().
-    else if sound = 3 uiAlarm().
+    if sound = 3 uiAlarm().
   }
 }
 

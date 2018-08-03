@@ -19,7 +19,7 @@ local ri is abs(obt:inclination - target:obt:inclination).
 
 if ri > 0.25 {
   uiBanner("Transfer", "Align planes with " + target:name).
-  run node_inc_tgt.
+  run node_inc.
   run node.
 }
 

@@ -63,8 +63,8 @@ local controlQ is False.
 function ascentThrottle {
 	// reaching apoapsis
 	local ApoPercent is ship:obt:apoapsis/apo.
-	if ApoPercent > 0.9 {
-		local ApoCompensation is (ApoPercent - 0.9) * 10.
+	if ApoPercent > 0.95 {
+		local ApoCompensation is (ApoPercent - 0.95) * 10.
 		set thr to 1.05 - min(1, max(0, ApoCompensation)).
 		return thr.
 	}
@@ -117,7 +117,7 @@ lock throttle to ascentThrottle().
 /////////////////////////////////////////////////////////////////////////////
 
 local warped to false.
-until ship:obt:apoapsis >= apo or (ship:altitude > apo/2 and eta:apoapsis < 10) {
+until ship:obt:apoapsis >= apo or (ship:altitude > apo/2 and eta:apoapsis < 30) {
 	stagingCheck().
 	ascentDeploy().
 	if not warped and altitude > min(ship:body:atm:height/10,1000) {
