@@ -30,7 +30,7 @@ if target:position:mag > 25000 and approachX > 25000 {
   // Align if necessary
   if ri > 0.1 {
     uiBanner("Rendezvous", "Alignment burn").
-    run node_inc_tgt.
+    run node_inc.
     run node.
   }
 

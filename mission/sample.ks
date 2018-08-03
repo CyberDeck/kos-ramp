@@ -4,12 +4,6 @@
 
 run once lib_ui.
 
-if ship:status = "PRELAUNCH" {
-  set ship:control:pilotmainthrottle to 1.
-  stage.
-  wait 2.
-}
-
 if ship:status = "FLYING" or ship:status = "SUB_ORBITAL" {
   run launch_asc(body:atm:height + (body:radius / 10)).
 }
