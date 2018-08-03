@@ -39,16 +39,6 @@ else
 //	fix sign by comparing cross-product to normal vector (the angle is either 0 or 180)
 	if vang(vcrs(sp,ln),sn) < 90 set ta to -ta.
 	set ta to ta + orbit:trueAnomaly.
-
-//	DEBUG:
-//	clearVecDraws().
-//	vecDraw(ship:position, sn:normalized*orbit:semiMajorAxis, blue,  "sn", 1, true).
-//	vecDraw(ship:position, tn:normalized*orbit:semiMajorAxis, green, "tn", 1, true).
-//	vecDraw(ship:position, ln:normalized*orbit:semiMajorAxis, red,   "ln=tn*sn", 1, true).
-//	vecDraw(ship:position, sp:normalized*orbit:semiMajorAxis, white, "sp", 1, true).
-//	vecDraw(ship:position, vcrs(sp,ln):normalized*orbit:semiMajorAxis*.5, yellow, "sp*ln", 1, true, 0.3).
-//	set vecDraw(body:position, ln:normalized*orbit:semiMajorAxis,
-//	red, "ln", 1, true):startUpdater to { return body:position. }.
 }
 
 set ta to utilAngleTo360(ta).

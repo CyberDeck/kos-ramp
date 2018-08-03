@@ -1,6 +1,4 @@
 // clearscreen.
-clearvecdraws().
-
 global ui_announce is 0.
 global ui_announceMsg is "".
 

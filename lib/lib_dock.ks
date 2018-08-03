@@ -63,7 +63,6 @@ function dockFinish {
   unlock steering.
   rcs off.
   sas on.
-  clearvecdraws().
 }
 
 // Back off from target in order to approach from the correct side.

@@ -193,23 +193,13 @@ if ship:status = "SUB_ORBITAL" or ship:status = "FLYING" {
             set tVal TO 0.
         }
 
-        if DrawDebugVectors { // I know, isn't the debug vectors but helps
-
-            PRINT "Vertical speed " + abs(Ship:VERTICALSPEED) + "                           " at (0,0).
-            Print "Target Vspeed  " + TargetVSpeed            + "                           " at (0,1).
-            print "Throttle       " + tVal                    + "                           " at (0,2).
-            print "Ship Velocity  " + ShipVelocity:MAG        + "                           " at (0,3).
-            print "Ship height    " + landRadarAltimeter()        + "                           " at (0,4).
-            print "                                                                    " at (0,5).
-
-        }
         wait 0.
     }
 
-    UNLOCK THROTTLE. UNLOCK STEERING.
+    UNLOCK THROTTLE.
+    UNLOCK STEERING.
     SET SHIP:CONTROL:NEUTRALIZE TO TRUE.
     SET SHIP:CONTROL:PILOTMAINTHROTTLE TO 0.
-    clearvecdraws().
     LADDERS ON.
     SAS ON. // Helps to don't tumble after landing
 }

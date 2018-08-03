@@ -11,7 +11,6 @@ ON AG10 reboot.
 runoncepath("lib/lib_ui").
 runoncepath("lib/lib_parts").
 
-CLEARVECDRAWS().
 CLEARGUIS().
 
 local OldIPU is Config:IPU.
@@ -956,7 +955,6 @@ until SafeToExit {
 }
 
 CLEARGUIS().
-CLEARVECDRAWS().
 BRAKES ON.
 SAS ON.
 SET Config:IPU TO OldIPU.
