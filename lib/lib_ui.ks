@@ -2,18 +2,7 @@
 global ui_announce is 0.
 global ui_announceMsg is "".
 
-global ui_debug     is true.  // Debug messages on console and screen
-global ui_debugNode is true. // Explain node planning
-global ui_debugAxes is false. // Explain 3-axis navigation e.g. docking
-
 global logconsole   is false. //Save console to log.txt / 0:/<CRAFT NAME>.txt
-
-global ui_DebugStb is vecdraw(v(0,0,0), v(0,0,0), GREEN, "Stb", 1, false).
-global ui_DebugUp is vecdraw(v(0,0,0), v(0,0,0), BLUE, "Up", 1, false).
-global ui_DebugFwd is vecdraw(v(0,0,0), v(0,0,0), RED, "Fwd", 1, false).
-
-global ui_myPort is vecdraw(v(0,0,0), v(0,0,0), YELLOW, "Ship", 1, false).
-global ui_hisPort is vecdraw(v(0,0,0), v(0,0,0), PURPLE, "Dock", 1, false).
 
 function uiConsole {
   parameter prefix.
@@ -117,29 +106,6 @@ function uiAssertAccel {
     uiFatal("Maneuver", "ENGINE FAULT").
   } else {
     return uiAccel.
-  }
-}
-
-function uiDebug {
-  parameter msg.
-
-  if ui_debug {
-    uiConsole("Debug", msg).
-    hudtext(msg, 3, 3, 24, WHITE, false).
-  }
-}
-
-function uiDebugNode {
-  parameter T.
-  parameter mdv.
-  parameter msg.
-
-  if ui_debugNode {
-    local nd is node(T, mdv:x, mdv:y, mdv:z).
-    add(nd).
-    uiDebug(msg).
-    wait(0.25).
-    remove(nd).
   }
 }
 

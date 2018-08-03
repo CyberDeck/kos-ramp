@@ -189,7 +189,6 @@ FUNCTION utilRCSCancelVelocity {
   // Prevents ship to rotate
   sas off.
   lock steering to ship:facing. 
-  uiDebug("Fine tune with RCS").
   // Cancel the speed.
   rcs on.
   local t0 is time.

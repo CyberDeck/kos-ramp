@@ -56,6 +56,3 @@ local pv is v *(cos(di)-1).
 //TODO: use node closer to apoapsis (ta > 90 and < 270) for eccentric orbits
 
 add node(t1, 0, nv, pv).
-
-//DEBUG:
-//terminal:input:getchar().

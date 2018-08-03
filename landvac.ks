@@ -40,9 +40,6 @@ BAYS OFF.
 GEAR OFF.
 LADDERS OFF.
 
-DrawDebugVectors off.
-
-
 
 // ************
 // MAIN PROGRAM
@@ -173,12 +170,6 @@ if ship:status = "SUB_ORBITAL" or ship:status = "FLYING" {
         Set DFactor TO 0.08. // How much the target position matters when steering. Higher values make landing more precise, but also may make the ship land with too much horizontal speed.
         SET TargetVector to vxcl(SHIP:UP:VECTOR,LandingSite:Position*DFactor).
         SET SteerVector to -ShipVelocity - ShipHVelocity + TargetVector.
-        if DrawDebugVectors {
-            SET DRAWSV TO VECDRAW(v(0,0,0),SteerVector, red, "Steering", 1, true, 1).
-            SET DRAWV TO VECDRAW(v(0,0,0),ShipVelocity, green, "Velocity", 1, true, 1).
-            SET DRAWHV TO VECDRAW(v(0,0,0),ShipHVelocity, YELLOW, "Horizontal Velocity", 1, true, 1).
-            SET DRAWTV TO VECDRAW(v(0,0,0),TargetVector, Magenta, "Target", 1, true, 1).
-        }
             
         set sDir TO SteerVector:Direction. 
 

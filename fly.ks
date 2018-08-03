@@ -17,7 +17,6 @@ local OldIPU is Config:IPU.
 if OldIPU < 500 set Config:IPU to 500. 
 
 Local CONSOLEINFO is FALSE.
-uiDebug("CONSOLE OUTPUT IS " + CONSOLEINFO).
 
 //////////////////////////////////////////////
 // Functions to use exclusive with this script
