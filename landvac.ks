@@ -57,8 +57,8 @@ if ship:status = "ORBITING" {
     // Zero the orbit inclination
     IF abs(OBT:INCLINATION) > 0.1 {
         uiBanner("Deorbit","Setting an equatorial orbit").
-        RUNPATH("node_inc_equ.ks",0).
-        RUNPATH("node.ks").
+	run node_inc(target_inclination).
+        run node.
     }
     // Circularize the orbit
     if obt:eccentricity > 0.01 {
