@@ -22,7 +22,6 @@ IF ship:STATUS = "PRELAUNCH" OR ship:STATUS = "LANDED" {
     includeList:add("launch_asc").
     includeList:add("lib_staging").
     includeList:add("lib_warp").
-    includeList:add("lib_launch_geo").
     includeList:add("circ.ks").
     includeList:add("node.ks").
   }

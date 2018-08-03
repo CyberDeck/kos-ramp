@@ -959,4 +959,3 @@ SAS ON.
 SET Config:IPU TO OldIPU.
 partsEnableReactionWheels().
 partsForwardThrust().
-uiBanner("Fly","Thanks to flying with RAMP. Remember to take your belongings.",2).
