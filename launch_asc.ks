@@ -141,9 +141,10 @@ wait until utilIsShipFacing(heading(hdglaunch,0):vector).
 local AdjustmentThrottle is 0.
 lock throttle to AdjustmentThrottle.
 until ship:altitude > body:atm:height {
+  stagingCheck().
+  ascentDeploy().
   if ship:obt:apoapsis < apo {
 	set AdjustmentThrottle to ascentThrottle().
-	stagingCheck().
 	wait 0.
   } else {
 	set AdjustmentThrottle to 0.

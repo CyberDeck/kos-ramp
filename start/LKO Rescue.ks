@@ -26,8 +26,8 @@ declare function waitForLaunch {
   set warp to 5.
   until approaching and inWindow {
     if approaching {
-      if warp > 3 set warp to 3.
-      if nearing and warp > 2 set warp to 2.
+      if warp > 4 set warp to 4.
+      if nearing and warp > 3 set warp to 3.
     }
   
     wait 1.
@@ -45,9 +45,10 @@ if (ship:status = "PRELAUNCH" or ship:status = "LANDED") and (not hastarget or n
 
 if ship:status = "PRELAUNCH" or ship:status = "LANDED" {
   local ap is ship:body:atm:height + 10000.
-  if abs(ap - target:orbit:periapsis) < 15000 {
-    set ap to target:orbit:apoapsis + 15000.
-    set ap to round(ap/10000) * 10000.
+  // make sure our orbits are at enogh altitude difference, too close and the hohmann transfer will be tricky
+  if abs(ap - target:orbit:periapsis) < 20000 {
+    set ap to target:orbit:apoapsis + 20000.
+    set ap to round(ap/1000) * 1000.
   }
 
   if target:orbit:periapsis < 250000 {

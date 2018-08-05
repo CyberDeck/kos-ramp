@@ -52,6 +52,13 @@ DECLARE FUNCTION includeFile {
   RETURN False.
 }
 
+declare function compileCopy {
+  parameter f.
+  parameter dir is "".
+  copyFiles:add(dir + f:name).
+  return f:size.
+}
+
 LOCAL copyFiles IS LIST().
 LOCAL libs IS LIST().
 LOCAL fls IS LIST().
@@ -63,8 +70,7 @@ FOR f IN fls {
     DELETEPATH("1:" + f:NAME).
     DELETEPATH("1:" + f:NAME:REPLACE(".ks", ".ksm")).
     IF includeFile(f:NAME) {
-      SET fSize to fSize + f:SIZE.
-      copyFiles:ADD(f:NAME).
+      SET fSize to fSize + compileCopy(f).
     }
   }
 }
@@ -75,8 +81,7 @@ FOR f IN libs {
     DELETEPATH("1:/lib/" + f:NAME).
     DELETEPATH("1:/lib/" + f:NAME:REPLACE(".ks", ".ksm")).
     IF includeFile("lib/" + f:NAME) {
-      SET fSize to fSize + f:SIZE.
-      copyFiles:ADD("lib/" + f:NAME).
+      SET fSize to fSize + compileCopy(f, "lib/").
     }
   }
 }
