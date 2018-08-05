@@ -50,22 +50,26 @@ if ship:status = "PRELAUNCH" or ship:status = "LANDED" {
     set ap to round(ap/10000) * 10000.
   }
 
-  local window is 5.
-  if ap > target:orbit:apoapsis set window to -40. // launch ahead of target
-  waitForLaunch(window).
+  if target:orbit:periapsis < 250000 {
+    local window is 5.
+    if ap > target:orbit:apoapsis set window to 50. // launch well ahead of target
+    waitForLaunch(window).
+  }
 
+  lights off.
   run launch_asc(ap).
   reboot.
 }
 
 if hastarget and ship:status = "ORBITING" {
   run rendezvous.
+  lights on.
   run dock.
 }
 
 if not hastarget and ship:status = "ORBITING" {
   ship:modulesnamed("ModuleGrappleNode")[0]:doevent("Control from here").
-  rcs off.
+  rcs on.
   sas off.
   lock steering to retrograde.
   wait 10.
@@ -84,7 +88,7 @@ if not hastarget and ship:status = "ORBITING" {
   rcs on.
   lock steering to R(0,0,0) * -velocity:surface.
   wait 1.
-  set warp to 2.
+  set warp to 3.
   wait until ship:altitude < body:atm:height.
   set warp to 0.
   wait 1.
@@ -93,11 +97,16 @@ if not hastarget and ship:status = "ORBITING" {
       if e:matchesPattern("Retract") m:doevent(e).
     }
   }
+  for m in ship:modulesnamed("ModuleDeployableSolarPanel") {
+    for e in m:allEventNames() {
+      if e:matchesPattern("Retract") m:doevent(e).
+    }
+  }
   wait 1.
   set warpMode to "PHYSICS".
   wait 1.
   set warp to 3.
-  wait until alt:radar < 3000.
+  wait until alt:radar < 12000.
   rcs off.
   sas off.
   unlock steering.

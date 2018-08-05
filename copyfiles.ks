@@ -81,6 +81,7 @@ FOR f IN libs {
   }
 }
 CD("..").
+IF NOT (DEFINED copyFilesOK) GLOBAL copyFilesOK IS True.
 IF core:volume:freespace > fSize {
   SET copyFilesOk TO True.
   IF NOT EXISTS("1:/lib") CREATEDIR("1:/lib").
