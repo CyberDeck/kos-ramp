@@ -1,7 +1,3 @@
-// Sample mission script: Mun mission with commented-out transfer command.
-// Designed for readability, not robustness! See other mission files for
-// more thorough and fault-tolerant examples.
-
 runoncepath("lib/lib_ui").
 runoncepath("lib/lib_parts").
 runoncepath("lib/lib_warp").

@@ -13,7 +13,13 @@
 // It expects the RAMP scripts files to be saved in 0:/ramp folder.
 /////////////////////////////////////////////////////////////////////////////
 
-ON AG10 REBOOT.
+local l is lexicon().
+
+ON AG10 {
+  l:add("abort", true).
+  writejson(l, "1:/status.json").
+  reboot.
+}
 
 // Print informational message.
 function bootConsole {
@@ -27,25 +33,7 @@ function bootError {
   parameter msg.
 
   print "T+" + round(time:seconds) + " boot: " + msg.
-
   hudtext(msg, 10, 4, 36, RED, false).
-
-  local vAlarm TO GetVoice(0).
-  set vAlarm:wave to "TRIANGLE".
-  set vAlarm:volume to 0.5.
-  vAlarm:PLAY(
-    LIST(
-        NOTE("A#4", 0.2,  0.25),
-        NOTE("A4",  0.2,  0.25),
-        NOTE("A#4", 0.2,  0.25),
-        NOTE("A4",  0.2,  0.25),
-        NOTE("R",   0.2,  0.25),
-        NOTE("A#4", 0.2,  0.25),
-        NOTE("A4",  0.2,  0.25),
-        NOTE("A#4", 0.2,  0.25),
-        NOTE("A4",  0.2,  0.25)
-    )
-  ).
   shutdown.
 }
 
@@ -53,7 +41,6 @@ function bootWarning {
   parameter msg.
 
   print "T+" + round(time:seconds) + " boot: " + msg.
-
   hudtext(msg, 10, 4, 24, YELLOW, false).
 }
 
@@ -67,7 +54,7 @@ WAIT 1.
 //Set up volumes
 SET HD TO CORE:VOLUME.
 SET ARC TO 0.
-SET StartupLocalFile TO path(core:volume) + "/startup.ks".
+SET StartupLocalFile TO path(core:volume) + "/startup.ksm".
 SET Failsafe TO false.
 
 bootConsole("Attemping to connect to KSC...").
@@ -88,9 +75,8 @@ IF HOMECONNECTION:ISCONNECTED {
 } ELSE {
   bootConsole("No connection to KSC detected.").
   IF EXISTS(StartupLocalFile) {
-    bootConsole("Local RAMP startup, proceeding.").
-  }
-  ELSE {
+    bootConsole("Local startup, proceeding.").
+  } ELSE {
     bootConsole("RAMP not detected; extend antennas...").
     IF Career():CANDOACTIONS {
       FOR P IN SHIP:PARTS {
@@ -109,52 +95,47 @@ IF HOMECONNECTION:ISCONNECTED {
 }
 
 LOCAL StartupOk is FALSE.
-
-bootConsole("Looking for remote startup script...").
-IF HOMECONNECTION:ISCONNECTED {
-  LOCAL StartupScript is PATH("0:/start/"+SHIP:NAME).
-  IF EXISTS(StartupScript) {
-    bootConsole("Copying remote startup script from archive.").
-    SWITCH TO HD.
-    IF COPYPATH(StartupScript, StartupLocalFile) {
-      StartupOk ON.
-    }
-    ELSE {
-      bootConsole("Startup file copy failed. Is there enough space?").
-    }
-  }
-  ELSE {
-    PRINT "--------------------------------------".
-    PRINT "No remote startup script found.".
-    PRINT "You can create a sample one by typing:".
-    PRINT "  RUN initialize.".
-    PRINT "--------------------------------------".
-  }
+LOCAL Aborted is FALSE.
+if exists("1:/status.json") set l to readjson("1:/status.json").
+if l:haskey("abort") {
+  set Aborted to True.
 }
-ELSE {
+
+bootConsole("Looking for remote start script...").
+IF HOMECONNECTION:ISCONNECTED {
+  LOCAL StartupScript is PATH("0:/start/" + SHIP:NAME).
+  IF EXISTS(StartupScript) {
+    bootConsole("Copying remote start script").
+    SWITCH TO HD.
+    compile StartupScript to StartupLocalFile.
+    StartupOK ON.
+  } ELSE {
+    PRINT "No startup script found. Run initialize".
+  }
+} ELSE {
   SWITCH TO HD.
   IF EXISTS(StartupLocalFile) {
     bootConsole("Using local storage.").
     StartupOk ON.
-  }
-  ELSE
-  {
-    bootError("Cannot find RAMP scripts or connect to KSC; please restart mission!").
+  } ELSE {
+    bootError("Cannot find scripts").
   }
 }
 
 IF Failsafe {
   bootWarning("Failsafe mode: run from archive.").
   SWITCH TO ARCHIVE.
-}
-ELSE {
+} ELSE {
   SWITCH TO HD.
 }
 
-IF StartupOk {
+print("startupok: " + startupok).
+print("aborted: " + aborted).
+
+IF StartupOk and not Aborted {
   RUNPATH(StartupLocalFile).
-}
-ELSE {
+} ELSE {
+  if Aborted bootConsole("ABORTED, NOT RUNNING BOOT SCRIPT").
   bootWarning("Need user input.").
   CORE:PART:GETMODULE("kOSProcessor"):DOEVENT("Open Terminal").
 }

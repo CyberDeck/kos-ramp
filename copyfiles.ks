@@ -23,7 +23,6 @@ IF ship:STATUS = "PRELAUNCH" OR ship:STATUS = "LANDED" {
     includeList:add("lib_staging").
     includeList:add("lib_warp").
     includeList:add("circ.ks").
-    includeList:add("node.ks").
   }
 } ELSE IF Ship:STATUS = "LANDED" AND Ship:Name:TOUPPER:Contains("ROVER") {
   includeList:add("rover").
@@ -33,7 +32,7 @@ IF ship:STATUS = "PRELAUNCH" OR ship:STATUS = "LANDED" {
   includeList:add("warp").
   includeList:add("lib_staging").
   includeList:add("transfer").
-  includeList:add("circ").
+  includeList:add("circ_alt").
   includeList:add("rendezvous").
   includeList:add("dock").
   includeList:add("approach").
@@ -55,8 +54,16 @@ DECLARE FUNCTION includeFile {
 declare function compileCopy {
   parameter f.
   parameter dir is "".
-  copyFiles:add(dir + f:name).
-  return f:size.
+
+  compile(f:name).
+  local ksm is open(f:name:replace(".ks", ".ksm")).
+  if ksm:size < f:size {
+    copyFiles:add(dir + ksm:name).
+    return ksm:size.
+  } else {
+    copyFiles:add(dir + f:name).
+    return f:size.
+  }
 }
 
 LOCAL copyFiles IS LIST().
