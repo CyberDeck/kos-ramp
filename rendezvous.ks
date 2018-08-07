@@ -23,8 +23,11 @@ local accel is uiAssertAccel("Rendezvous").
 local approachT is utilClosestApproach(ship, target).
 local approachX is (positionat(target, approachT) - positionat(ship, approachT)):mag.
 
+print("target:position:mag " + target:position:mag).
+print("approachX: " + approachX).
+
 // Perform Hohmann transfer if necessary
-if target:position:mag > 25000 and approachX > 25000 {
+if target:position:mag > 15000 and approachX > 15000 {
   local ri is abs(obt:inclination - target:obt:inclination).
 
   // Align if necessary

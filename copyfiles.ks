@@ -55,15 +55,15 @@ declare function compileCopy {
   parameter f.
   parameter dir is "".
 
-  compile(f:name).
-  local ksm is open(f:name:replace(".ks", ".ksm")).
-  if ksm:size < f:size {
-    copyFiles:add(dir + ksm:name).
-    return ksm:size.
-  } else {
+  //compile(f:name).
+  //local ksm is open(f:name:replace(".ks", ".ksm")).
+  //if ksm:size < f:size {
+  //  copyFiles:add(dir + ksm:name).
+  //  return ksm:size.
+  //} else {
     copyFiles:add(dir + f:name).
     return f:size.
-  }
+  //}
 }
 
 LOCAL copyFiles IS LIST().

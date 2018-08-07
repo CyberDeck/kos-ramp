@@ -54,7 +54,7 @@ WAIT 1.
 //Set up volumes
 SET HD TO CORE:VOLUME.
 SET ARC TO 0.
-SET StartupLocalFile TO path(core:volume) + "/startup.ksm".
+SET StartupLocalFile TO path(core:volume) + "/startup.ks".
 SET Failsafe TO false.
 
 bootConsole("Attemping to connect to KSC...").
@@ -107,7 +107,7 @@ IF HOMECONNECTION:ISCONNECTED {
   IF EXISTS(StartupScript) {
     bootConsole("Copying remote start script").
     SWITCH TO HD.
-    compile StartupScript to StartupLocalFile.
+    copypath(StartupScript, StartupLocalFile).
     StartupOK ON.
   } ELSE {
     PRINT "No startup script found. Run initialize".
@@ -128,9 +128,6 @@ IF Failsafe {
 } ELSE {
   SWITCH TO HD.
 }
-
-print("startupok: " + startupok).
-print("aborted: " + aborted).
 
 IF StartupOk and not Aborted {
   RUNPATH(StartupLocalFile).

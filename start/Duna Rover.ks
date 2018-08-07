@@ -1,8 +1,8 @@
 // This lands a rover type vessel on Duna.
 // Does not work with RemoteTech because SAS control is used.
 // Decouplers tagged with "entry" will be decoupled when entering the atmosphere
-// Decouplers tagged with "descend" will be decoupled at 1000 AGL.
-// Decouplers tagged with "landed" will be decoupled just before touchdown.
+// Decouplers/Fairings tagged with "descend" will deploy during descend.
+// Decouplers, Antennas, Solar Panels tagged with "landed" will deploy after touchdown.
 
 runoncepath("lib/lib_ui.ks").
 runoncepath("lib/lib_parts.ks").
@@ -55,7 +55,7 @@ if ship:status = "FLYING" {
   set warp to 0.
   wait 1.
   // deploy whatever fairings we have
-  partsDeployFairings().
+  partsDeployFairings("descend").
   wait 1.
   set warp to 3.
   wait until alt:radar < 2000.
@@ -95,8 +95,8 @@ if ship:status = "FLYING" {
 
   wait 10.
   unlock all.
-  partsExtendAntennas().
-  partsExtendSolarPanels().
+  partsExtendAntennas("landed").
+  partsExtendSolarPanels("landed").
   wait 5.
   reboot.
 }
