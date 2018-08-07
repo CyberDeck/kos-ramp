@@ -133,7 +133,7 @@ until runmode = -1 {
             }
         }
         //Detect rollover
-        if roverIsRollingOver(N) {
+        if roverIsRollingOver(ship, N) {
             set turnfactor to max(1,turnfactor * 0.9). //Reduce turnfactor
             roverStabilzeJump(N). //Engage Stability control
         }

@@ -64,7 +64,8 @@ function roverStabilzeJump {
 }
 
 function roverIsRollingOver {
+    parameter s.
     parameter N is TerrainNormalVector().
     parameter Limit is 20.
-    return vang(vxcl(ship:facing:vector,ship:facing:upvector),vxcl(ship:facing:vector,N)) > Limit. 
+    return vang(vxcl(s:facing:vector,s:facing:upvector),vxcl(s:facing:vector,N)) > Limit. 
 }
