@@ -15,7 +15,10 @@ includeList:add("lib_util").
 
 IF ship:STATUS = "PRELAUNCH" OR ship:STATUS = "LANDED" {
   includeList:add("launch.ks").
-  IF(KUniverse:ORIGINEDITOR = "SPH" OR Ship:Name:TOUPPER:Contains("SSTO")) {
+  IF ship:Name:TOUPPER:Contains("ROVER") {
+    includeList:add("lib_terrain").
+    includeList:add("rover").
+  } ELSE IF(KUniverse:ORIGINEDITOR = "SPH" OR Ship:Name:TOUPPER:Contains("SSTO")) {
     includeList:add("launch_ssto").
     includeList:add("fly").
   } ELSE {
@@ -24,9 +27,6 @@ IF ship:STATUS = "PRELAUNCH" OR ship:STATUS = "LANDED" {
     includeList:add("lib_warp").
     includeList:add("circ.ks").
   }
-} ELSE IF Ship:STATUS = "LANDED" AND Ship:Name:TOUPPER:Contains("ROVER") {
-  includeList:add("rover").
-  includeList:add("lib_terrain").
 } ELSE IF ship:STATUS = "SUB_ORBITAL" OR ship:STATUS = "ORBITING" OR ship:STATUS = "ESCAPING" {
   includeList:add("node").
   includeList:add("warp").
