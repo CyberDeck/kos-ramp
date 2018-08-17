@@ -2,9 +2,9 @@
 
 parameter TargetToFollow.
 parameter DistanceToFollow is 30.
-parameter speedlimit is 28. // Speed limit. Default 28m/s ~ 100km/h
-parameter turnfactor is 5. // Turnfactor
-parameter BreakTime is 3. // Time the craft need to stop with brakes.
+parameter speedlimit is 12.
+parameter turnfactor is 3. // Turnfactor
+parameter BreakTime is 10. // Time the craft need to stop with brakes.
 
 ON AG10 reboot.
 
@@ -69,8 +69,7 @@ partsExtendAntennas().
 if ship:status = "PRELAUNCH" {
     uiWarning("Rover","Rover is in Pre-Launch State. Launch it!").
     wait until ship:status <> "PRELAUNCH".
-}
-else if ship:status <> "LANDED" {  
+} else if ship:status <> "LANDED" {  
     uiError("Rover","Can't drive a rover that is " + ship:status).
     set runmode to -1.
 }
@@ -87,7 +86,6 @@ set WSteeringPID:SETPOINT TO 0.
 
 
 until runmode = -1 {
-
     set targetBearing to CoordToFollow:bearing.
     set TargetDistance to CoordToFollow:distance.
     set gs to vdot(ship:facing:vector,ship:velocity:surface).
@@ -102,8 +100,7 @@ until runmode = -1 {
             set targetspeed to SpeedPID:UPDATE(time:seconds,DistanceToFollow-TargetDistance).
             if RelSpeed > 2 set brakes to TargetDistance/RelSpeed <= BreakTime.
             else brakes off.
-        }
-        else {
+        } else {
             //When have a list of waypoints, use the distance to next waypoint plus cosine error to the next one to compute speed and braking.
             local SpeedFactor is Waypoints:Peek():distance * max(0,cos(abs(Waypoints:Peek():bearing))).
             set targetspeed to SpeedPID:UPDATE(time:seconds,DistanceToFollow-(TargetDistance+SpeedFactor)).

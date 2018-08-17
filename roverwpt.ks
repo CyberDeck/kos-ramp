@@ -1,6 +1,6 @@
 @lazyglobal off.
 
-Parameter MaxSpeed is 28.
+Parameter MaxSpeed is 12.
 Parameter WaypointTolerance is 5.
 
 ON AG10 reboot.
