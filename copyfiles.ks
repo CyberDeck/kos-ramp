@@ -18,6 +18,7 @@ IF ship:STATUS = "PRELAUNCH" OR ship:STATUS = "LANDED" {
   IF ship:Name:TOUPPER:Contains("ROVER") {
     includeList:add("lib_terrain").
     includeList:add("rover").
+    includeList:add("astar").
   } ELSE IF(KUniverse:ORIGINEDITOR = "SPH" OR Ship:Name:TOUPPER:Contains("SSTO")) {
     includeList:add("launch_ssto").
     includeList:add("fly").

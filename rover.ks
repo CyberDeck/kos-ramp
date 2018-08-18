@@ -2,8 +2,6 @@
 
 runoncepath("lib/lib_ui").
 
-ON AG10 reboot.
-
 set ship:type to "Rover".
 
 local RoverOptions is lexicon(

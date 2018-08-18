@@ -6,8 +6,6 @@ parameter speedlimit is 12.
 parameter turnfactor is 3. // Turnfactor
 parameter BreakTime is 10. // Time the craft need to stop with brakes.
 
-ON AG10 reboot.
-
 runoncepath("lib/lib_ui").
 runoncepath("lib/lib_parts").
 runoncepath("lib/lib_terrain").
@@ -84,6 +82,14 @@ local WSteeringkP is 0.010.
 local WSteeringPID is PIDLOOP(WSteeringkP,0.0001,0.002, -1, 1). // Kp, Ki, Kd, MinOutput, MaxOutput
 set WSteeringPID:SETPOINT TO 0. 
 
+local powersave is false.
+local lock ecPercent to partsPercentEC().
+
+local Stop is False.
+ON AG10 {
+  uiBanner("Rover","Stopping.").
+  SET Stop to True.
+}
 
 until runmode = -1 {
     set targetBearing to CoordToFollow:bearing.
@@ -92,10 +98,37 @@ until runmode = -1 {
     set turnlimit to min(1, turnfactor / abs(gs)). //Scale the turning radius based on current speed
 
     set N to TerrainNormalVector().
+ 
+    if not powersave and ecPercent < 8 {
+        set powersave to true.
+        uiBanner("Rover","Low battery, power down",2).
+    } else if powersave and ecPercent > 95 {
+        set powersave to false.
+        uiBanner("Rover","Battery charged, resuming",2).
+    }
+
+    // emergency shutdown
+    if ecPercent < 1 {
+      brakes on.
+    }
+
+    if RelSpeed < 0.1 {
+        partsExtendSolarPanels("stop").
+        partsExtendAntennas("stop").
+        lights off.
+    } else {
+        partsRetractSolarPanels("stop").
+        partsRetractAntennas("stop").
+        lights on.
+    }
+    if Stop and RelSpeed < 0.1 set runmode to -1.
 
     if runmode = 0 { //Govern the rover 
         //Wheel Throttle and brakes:
-        if FollowingVessel or Waypoints:EMPTY() {
+        if powersave or Stop {
+            set targetspeed to 0.
+            set brakes to RelSpeed < 2.
+        } else if FollowingVessel or Waypoints:EMPTY() {
             // If following a vessel or have just one waypoint, use the distance from they to compute speed and braking.
             set targetspeed to SpeedPID:UPDATE(time:seconds,DistanceToFollow-TargetDistance).
             if RelSpeed > 2 set brakes to TargetDistance/RelSpeed <= BreakTime.
@@ -153,7 +186,7 @@ until runmode = -1 {
     wait 0. // Waits for next physics tick.
 }
 
-uiBanner("Rover","Destination reached.",2).
+uiBanner("Rover","Automated driving stopped.",2).
 
 //Clear before end
 UNLOCK Throttle.
@@ -163,3 +196,4 @@ SET ship:control:translation to v(0,0,0).
 SET SHIP:CONTROL:NEUTRALIZE TO TRUE.
 SET SHIP:CONTROL:PILOTMAINTHROTTLE TO 0.
 BRAKES ON.
+LIGHTS OFF.

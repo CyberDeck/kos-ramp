@@ -12,8 +12,6 @@
 parameter speedlimit is 39. // Speedlimit. Default is 39 m/s, almost 88mph ;)
 parameter turnfactor is 5. // Factor to reduce steering with speed..
 
-ON AG10 reboot.
-
 runoncepath("lib/lib_ui").
 runoncepath("lib/lib_util").
 runoncepath("lib/lib_parts").

@@ -15,12 +15,6 @@
 
 local l is lexicon().
 
-ON AG10 {
-  l:add("abort", true).
-  writejson(l, "1:/status.json").
-  reboot.
-}
-
 // Print informational message.
 function bootConsole {
   parameter msg.
@@ -95,11 +89,6 @@ IF HOMECONNECTION:ISCONNECTED {
 }
 
 LOCAL StartupOk is FALSE.
-LOCAL Aborted is FALSE.
-if exists("1:/status.json") set l to readjson("1:/status.json").
-if l:haskey("abort") {
-  set Aborted to True.
-}
 
 bootConsole("Looking for remote start script...").
 IF HOMECONNECTION:ISCONNECTED {
@@ -129,10 +118,9 @@ IF Failsafe {
   SWITCH TO HD.
 }
 
-IF StartupOk and not Aborted {
+IF StartupOk {
   RUNPATH(StartupLocalFile).
 } ELSE {
-  if Aborted bootConsole("ABORTED, NOT RUNNING BOOT SCRIPT").
   bootWarning("Need user input.").
   CORE:PART:GETMODULE("kOSProcessor"):DOEVENT("Open Terminal").
 }
